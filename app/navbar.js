@@ -52,11 +52,11 @@ export default function Navbar() {
       <div className="flex justify-between items-center h-full w-full px-24 2xl:px-16">
         <Link href="/">
           <div className="flex flex-row items-center justify-center gap-2">
-            <div className="flex items-center justify-center h-16 bg-gradient-to-b from-primary-base to-secondary-base rounded-lg w-16 cursor-pointer">
+            <div className="flex items-center justify-center h-9 bg-gradient-to-b from-primary-base to-secondary-base rounded-lg w-9 cursor-pointer">
               <Image
                 src="/assets/images/logo-white.png"
-                width={50}
-                height={50}
+                width={21}
+                height={23}
               />
             </div>
             <p className="font-bold text-[32px] text-primary-base">Sharein</p>

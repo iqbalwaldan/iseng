@@ -7,6 +7,10 @@ import Hero from "./hero";
 import Features from "./features";
 import Reason from "./reason";
 import Subscribe from "./subscribe";
+import Join from "./join";
+import How from "./how";
+import Commitment from "./commitment";
+import Testimonial from "./testimonial";
 
 export default function Home() {
   return (
@@ -16,6 +20,10 @@ export default function Home() {
       <Hero/>
       <Reason/>
       <Subscribe/>
+      <How/>
+      <Join/>
+      <Commitment/>
+      <Testimonial/>
       <Features/>
       
       
