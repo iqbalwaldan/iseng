@@ -42,8 +42,8 @@ export default function Login() {
       <div
         key={slideIndex}
         onClick={() => goToSlide(slideIndex)}
-        className={`w-4 h-4 rounded-full border mx-2 cursor-pointer ${
-          slideIndex === currentIndex ? "bg-white border-[1px]" : ""
+        className={`w-4 h-4 rounded-full border border-1 mx-2 cursor-pointer ${
+          slideIndex === currentIndex ? "bg-white" : ""
         }`}
       ></div>
     ));
@@ -57,12 +57,7 @@ export default function Login() {
           slideIndex === currentIndex ? "block" : "hidden"
         }`}
       >
-        <Image
-          src={slide.url}
-          alt={`Slide ${slideIndex}`}
-          width={500}
-          height={500}
-        />
+        <img src={slide.url} alt={`Slide ${slideIndex}`} />
       </div>
     ));
   };
@@ -77,7 +72,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="md:w-register-left w-full mx-auto py-7 md:p-20 bg-[url('/assets/images/Register-bg.png')] bg-cover bg-center bg-no-repeat">
+      <div className="md:w-register-left w-full mx-auto py-6 md:p-20 bg-[url('/assets/images/Register-bg.png')] bg-cover bg-center bg-no-repeat">
         <div className="h-full bg-blue-500 bg-opacity-30 backdrop-blur-lg rounded-2xl border-[6px] border-[#5882C1] border-opacity-50">
           <div className="flex flex-col">
             <div className="mx-auto">{renderImages()}</div>
@@ -91,16 +86,16 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <div className="md:w-register-right w-full h-full">
-        <div className="bg-white p-6 md:px-32 md:py-12">
+      <div className="md:w-register-right w-full h-screen">
+        <div className="bg-white p-6 md:px-32 md:py-10">
           <div className="w-16 h-16 bg-gradient-to-b from-primary-base to-secondary-base rounded-lg flex items-center justify-center mb-6">
-            <Image src="/assets/images/logo-white.png" width={50} height={50} />
+            <Image src="/assets/images/logo-white.png" width="50" height="50" />
           </div>
           <h1 className="font-bold text-4xl text-neutral-80 mb-4">Sign In</h1>
           <p className="text-base font-light text-neutral-70">
             Welcome back! Please enter your details
           </p>
-          <div className="w-[400px] flex flex-col mt-4">
+          <div className="w-full   flex flex-col mt-4">
             <button className="w-full my-2 rounded-md border border-1 border-[#CACBCD] p-2 text-center text-[#7D7F82] flex item-center justify-center">
               <Image
                 src="/assets/icons/google2.png"
@@ -116,21 +111,20 @@ export default function Login() {
             <p className="text-[#4B4C4E] text-base">or Sign with Email</p>
             <div className="w-[80px] h-[1px] bg-[#4B4C4E] mx-2"></div>
           </div>
-
-          <div className=" w-[400px] flex flex-col mt-3">
+          <div className="flex flex-col mt-6 w-full">
             <div className="flex mb-1">
-              <p className="font-normal text-base text-neutral-70">Email</p>
+              <p className="font-normal text-base text-neutral-70">
+                Email
+              </p>
               <p className="font-normal text-base text-error-base">*</p>
             </div>
-            <div className="flex">
-              <input
-                className="border border-[#CFCFCF] p-5 text-neutral-70 focus:outline-none flex-grow h-12 rounded-r-md text-base font-light"
-                type="text"
-                placeholder="your email"
-              />
-            </div>
-          </div>
-          <div className=" w-[400px] flex flex-col mt-6">
+            <input
+              className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
+              type="text"
+              placeholder="your email"
+            />
+          </div> 
+          <div className="flex flex-col mt-6 w-full">
             <div className="flex mb-1">
               <p className="font-normal text-base text-neutral-70">Password</p>
               <p className="font-normal text-base text-error-base">*</p>
@@ -141,7 +135,7 @@ export default function Login() {
               placeholder="your password"
             />
           </div>
-          <div className="w-[400px] flex items-center justify-between mt-3">
+          <div className="w-full flex items-center justify-between mt-4">
             <div className="w-full flex items-center">
               <input type="checkbox" className="w-4  h-4 mr-2" />
               <p className="text-sm text-[#646568]">Remember me</p>
@@ -154,17 +148,17 @@ export default function Login() {
             </a>
           </div>
           <button className="bg-[#2652FF] w-full h-[51px] mt-10 rounded-md py-2 px-4 text-xl font-semibold text-white">
-            Sing In
+            Sign In
           </button>
-          <div className="flex mb-1 mt-48 mx-auto my-3 justify-center">
+          <div className="flex mb-1 mx-auto my-3 justify-center">
             <p className="font-normal text-base text-neutral-70">
-              Not Registered Yet?&nbsp;
+              Already have an account?&nbsp;
             </p>
             <a
               className="font-semibold text-base text-primary-base"
               href="/register"
             >
-              Create an account
+              Sign in
             </a>
           </div>
         </div>
