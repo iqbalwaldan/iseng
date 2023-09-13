@@ -3,7 +3,7 @@ import Card from './card'
 
 export default function Features() {
   return (
-    <section className="w-full h-screen bg-white bg-cover bg-center bg-no-repeat">
+    <section className="w-full h-full bg-white bg-cover bg-center bg-no-repeat">
       <div className="flex flex-col lg:flex-row pt-10">
         <div className="lg:ml-0 flex flex-col items-center lg:items-center text-center lg:text-left justify-center flex-1 lg:px-0">
             <h1 className="text-5xl font-semibold text-[#F7B217]"><span className="text-neutral-80 text-5xl font-semibold">Choose Your&nbsp;</span>Package Now</h1>

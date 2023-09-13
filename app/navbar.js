@@ -48,7 +48,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed w-full h-24 ${navbarClass}`}>
+    <nav className={`fixed w-full h-24 ${navbarClass} z-50`}>
       <div className="flex justify-between items-center h-full w-full px-24 2xl:px-16">
         <Link href="/">
           <div className="flex flex-row items-center justify-center gap-2">

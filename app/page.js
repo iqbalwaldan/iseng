@@ -11,6 +11,8 @@ import Join from "./join";
 import How from "./how";
 import Commitment from "./commitment";
 import Testimonial from "./testimonial";
+import Newsletter from "./newsletter";
+import Footer from "./footer";
 
 export default function Home() {
   return (
@@ -25,6 +27,8 @@ export default function Home() {
       <Commitment/>
       <Testimonial/>
       <Features/>
+      <Newsletter/>
+      <Footer/>
       
       
       {/* <div className="h-10 flex content-center justify-between">
