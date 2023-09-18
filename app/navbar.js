@@ -64,12 +64,12 @@ export default function Navbar() {
         </Link>
         <div className="hidden sm:flex">
           <ul className="hidden sm:flex items-center justify-center">
-            <Link href="/">
+            <Link href="#hero">
               <li className="ml-10 text-xl font-semibold" style={textStyles}>
                 Why us
               </li>
             </Link>
-            <Link href="/features">
+            <Link href="#features">
               <li className="ml-10 text-xl font-semibold" style={textStyles}>
                 Features
               </li>

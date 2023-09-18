@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="w-full h-screen bg-[url('/assets/images/home-bg.png')] bg-cover bg-center bg-no-repeat">
+    <section id="hero" className="w-full h-screen bg-[url('/assets/images/home-bg.png')] bg-cover bg-center bg-no-repeat">
       <div className="flex flex-col lg:flex-row pt-40">
         <div className="lg:ml-8 xl:ml-[135px] flex flex-col items-center lg:items-start text-center lg:text-left justify-center flex-1 lg:px-0">
             <h1 className="text-6xl font-semibold text-neutral-10"><span className="text-[#F7B217] text-6xl font-semibold">Unleash Time,&nbsp;</span>Unleash Content with Sharein</h1>
