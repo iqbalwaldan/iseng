@@ -1,5 +1,6 @@
 "use client";
 import { MessageIcon, NotificationIcon } from "@/public/assets/icons";
+import Link from "next/link";
 import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
@@ -20,13 +21,15 @@ export default function Header({ title }) {
               type="text"
               placeholder="Search"
             />
-            <FiSearch className="absolute top-1/2 -translate-y-1/2 left-4 text-neutral-60"/>
+            <FiSearch className="absolute top-1/2 -translate-y-1/2 left-4 text-neutral-60" />
           </div>
         </div>
         <div className="flex flex-row gap-6 items-center justify-end">
           <NotificationIcon className={notificationIconColor} />
           <MessageIcon />
-          <div className="w-8 h-8 rounded-full bg-cover bg-center bg-no-repeat bg-[url('/assets/images/person1.png')]"></div>
+          <Link href="/fb-auto-post/profile">
+            <div className="w-8 h-8 rounded-full bg-cover bg-center bg-no-repeat bg-[url('/assets/images/person1.png')]"></div>
+          </Link>
         </div>
       </div>
     </header>
