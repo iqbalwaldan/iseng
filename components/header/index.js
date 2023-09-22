@@ -10,8 +10,14 @@ export default function Header({ title }) {
     ? "text-error-base"
     : "text-transparent";
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <header className="sticky top-0 z-9999 flex w-full h-[86px] mt-4 bg-white">
+    <header className="sticky top-0 z-50 flex w-full h-[86px] py-4 bg-white">
       <div className="flex flex-grow items-center gap-2 justify-between px-8">
         <div className="flex items-center w-[75%] justify-between">
           <h1 className="text-4xl font-semibold text-primary-base">{title}</h1>
@@ -27,9 +33,21 @@ export default function Header({ title }) {
         <div className="flex flex-row gap-6 items-center justify-end">
           <NotificationIcon className={notificationIconColor} />
           <MessageIcon />
-          <Link href="/fb-auto-post/profile">
-            <div className="w-8 h-8 rounded-full bg-cover bg-center bg-no-repeat bg-[url('/assets/images/person1.png')]"></div>
-          </Link>
+          <div
+            className="relative w-8 h-8 rounded-full bg-cover bg-center bg-no-repeat bg-[url('/assets/images/person1.png')]"
+            onClick={toggleDropdown}
+          >
+            {isOpen && (
+              <div className="absolute top-9 -left-5 -translate-x-1/2 bg-white border border-gray-300 shadow-lg rounded-md py-2">
+                <ul>
+                  <Link href='/fb-auto-post/profile'>
+                  <li className="px-4 py-2">Profile</li>
+                  </Link>
+                  <li className="px-4 py-2">Settings</li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>
