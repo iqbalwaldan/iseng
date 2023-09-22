@@ -164,7 +164,7 @@ export default function Card() {
                   </h1>
                   <p className="font-light text-lg text-neutral-80">/Bln</p>
                 </div>
-                <Link href="/fb-auto-post/subscription/payment/">
+                <Link href="#">
                   <button
                     className={`py-3 px-8 2xl:px-10 ${item.btn_color} text-base 2xl:text-xl font-semibold text-white rounded-lg mb-2`}
                   >
