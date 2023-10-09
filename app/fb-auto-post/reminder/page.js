@@ -180,7 +180,7 @@ export default function Reminder() {
                   </span>
                 </label>
                 <textarea
-                  class=" appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white h-48"
+                  className=" appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white h-48"
                   id="message"
                   placeholder="Enter a description"
                 ></textarea>

@@ -22,7 +22,7 @@ const menuItems = [
   {
     id: "dashboard",
     label: "Dashboard",
-    path: "/fb-auto-post/dashboard",
+    path: "/fb-auto-post/",
     icon: <DashboardIcon />,
   },
   {
@@ -107,7 +107,7 @@ export default function Sidebar({ setSelectedMenuItem }) {
 
   return (
     <aside
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-64 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0
+      className={`absolute left-0 top-0 flex h-screen w-64 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0
     ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
     `}
     >
