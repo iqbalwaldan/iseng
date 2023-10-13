@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { render } from "react-dom";
-import Clock from "react-live-clock";
 
 export default function Reminder() {
   const [selectedDate, setSelectedDate] = useState(null);

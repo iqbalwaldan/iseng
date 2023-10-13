@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
@@ -190,6 +190,33 @@ export default function LoginMultiAccount() {
       status_border_color: "border-success-60",
       status_text_color: "text-success-60",
     },
+    {
+      Name: "Judha Maygustya Account",
+      IA: "1538193517849371",
+      SED: "23 December 2023",
+      Status: "Active",
+      status_bg_color: "bg-success-20",
+      status_border_color: "border-success-60",
+      status_text_color: "text-success-60",
+    },
+    {
+      Name: "Judha Maygustya Account",
+      IA: "1538193517849371",
+      SED: "23 December 2023",
+      Status: "Active",
+      status_bg_color: "bg-success-20",
+      status_border_color: "border-success-60",
+      status_text_color: "text-success-60",
+    },
+    {
+      Name: "Judha Maygustya Account",
+      IA: "1538193517849371",
+      SED: "23 December 2023",
+      Status: "Active",
+      status_bg_color: "bg-success-20",
+      status_border_color: "border-success-60",
+      status_text_color: "text-success-60",
+    },
     // Example data...
   ]);
 
@@ -214,7 +241,8 @@ export default function LoginMultiAccount() {
     Swal.fire({
       icon: "success",
       title: "Successfully Added a Reminder",
-      text: "You have successfully added a reminder and we will send you a reminder when the set date arrives",
+      text:
+        "You have successfully added a reminder and we will send you a reminder when the set date arrives",
       confirmButtonText: "Okay",
       confirmButtonColor: "#2652FF",
     });
@@ -224,7 +252,8 @@ export default function LoginMultiAccount() {
     Swal.fire({
       icon: "error",
       title: "Failed to Add Reminder",
-      text: "Sorry, the reminder failed to add because the date you entered has passed.",
+      text:
+        "Sorry, the reminder failed to add because the date you entered has passed.",
       confirmButtonText: "Try Again",
       confirmButtonColor: "#2652FF",
     });
@@ -270,7 +299,7 @@ export default function LoginMultiAccount() {
               className="w-[200px] h-[35px] my-2 rounded-md border border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
               onClick={handleSortStatus}
             >
-              Sort by Status: {sortOrder === "asc" ? "Ascending" : "Descending"}
+              Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
             </button>
           </div>
         </div>
@@ -349,6 +378,10 @@ export default function LoginMultiAccount() {
                   key={pageNumber}
                   className={`bg-[#F5F5F5] text-black p-2 rounded-md ${pageNumber === currentPage ? 'font-bold' : ''}`}
                   onClick={() => handlePageChange(pageNumber)}
+                  style={{
+                    borderColor: pageNumber === currentPage ? 'blue' : '#F5F5F5',
+                    cursor: 'pointer',
+                  }}
                 >
                   {pageNumber}
                 </button>
@@ -357,6 +390,10 @@ export default function LoginMultiAccount() {
                 className="bg-[#F5F5F5] text-black p-2 rounded-md"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage * itemsPerPage >= data.length}
+                style={{
+                  borderColor: currentPage * itemsPerPage >= data.length ? '#F5F5F5' : 'blue',
+                  cursor: currentPage * itemsPerPage >= data.length ? 'not-allowed' : 'pointer',
+                }}
               >
                 Next
               </button>
