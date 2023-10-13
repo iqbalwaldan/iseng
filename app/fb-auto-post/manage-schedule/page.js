@@ -486,12 +486,17 @@ export default function ManageSchedule() {
             Active Scheduled
           </div>
           <div className="w-full ml-96">
-            <button
-              className="w-[200px] h-[35px] my-2 rounded-md  border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
-              onClick={handleSortStatus}
+            <select
+              className="w-[200px] h-[35px] my-2 rounded-md border-1 bg-[#DCDDDE] p-2 text-xs text-black"
+              onChange={handleSortStatus}
             >
-              Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
-            </button>
+              <option value="asc">
+                Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
+              </option>
+              <option value="desc">
+                Sort by Status: {sortOrder === "desc" ? "Suspend" : "Active"}
+              </option>
+            </select>
           </div>
         </div>
 
@@ -566,7 +571,7 @@ export default function ManageSchedule() {
                                   <div className="w-full flex justify-evenly">
                                     <div>
                                       <p className="mb-3 font-semibold text-xl text-neutral-80">
-                                      Determine the schedule date and time{" "}
+                                        Determine the schedule date and time{" "}
                                       </p>
                                       <div className="w-[464px] border border-neutral-20 p-4 rounded mr-4">
                                         <div className="flex items-center mb-3">
@@ -605,7 +610,7 @@ export default function ManageSchedule() {
                                     </div>
                                     <div className="flex flex-col ml-6">
                                       <p className="mb-3 font-semibold text-xl text-neutral-80">
-                                      Enter posting time{" "}
+                                        Enter posting time{" "}
                                       </p>
                                       {isEditMode ? (
                                         <div
