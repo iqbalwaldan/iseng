@@ -566,7 +566,7 @@ export default function ManageSchedule() {
                                   <div className="w-full flex justify-evenly">
                                     <div>
                                       <p className="mb-3 font-semibold text-xl text-neutral-80">
-                                        Enter reminder time{" "}
+                                      Determine the schedule date and time{" "}
                                       </p>
                                       <div className="w-[464px] border border-neutral-20 p-4 rounded mr-4">
                                         <div className="flex items-center mb-3">
@@ -605,7 +605,7 @@ export default function ManageSchedule() {
                                     </div>
                                     <div className="flex flex-col ml-6">
                                       <p className="mb-3 font-semibold text-xl text-neutral-80">
-                                        Enter reminder time{" "}
+                                      Enter posting time{" "}
                                       </p>
                                       {isEditMode ? (
                                         <div
