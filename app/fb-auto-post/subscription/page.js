@@ -198,7 +198,7 @@ export default function Subscription() {
               >
                 See more
               </p>
-              <FiChevronDown color={item.btn_bottom_color} />
+              <FiChevronDown color={item.btn_bottom_color}/>
             </div>
           </div>
         </div>

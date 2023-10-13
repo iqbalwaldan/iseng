@@ -193,7 +193,7 @@ export default function Dashboard() {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className="flex flex-row items-center gap-6">
+      <div className="flex flex-wrap flex-row items-center gap-6">
         <ChartActiveAccount/>
         <ChartSuspendAccount/>
         <ChartMarketPlacePost/>
