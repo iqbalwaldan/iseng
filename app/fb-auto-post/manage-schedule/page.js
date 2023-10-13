@@ -564,37 +564,43 @@ export default function ManageSchedule() {
                               <ModalBody>
                                 <div className="flex justify-evenly w-full">
                                   <div className="w-full flex justify-evenly">
-                                    <div className="w-[464px] border border-neutral-20 p-4 rounded mr-4">
+                                    <div>
                                       <p className="mb-3 font-semibold text-xl text-neutral-80">
                                         Enter reminder time{" "}
                                       </p>
-                                      <div className="flex items-center mb-3">
-                                        <button
-                                          onClick={() => changeCalendarPage(-1)}
-                                        >
-                                          <img src="/assets/icons/left_arrow.png" />
-                                        </button>
-                                        <h2 className="text-base 2xl:text-xl text-neutral-100 font-semibold cursor-default mx-[10px]">
-                                          {format(currentDate, "MMMM yyyy")}
-                                        </h2>
-                                        <button
-                                          onClick={() => changeCalendarPage(1)}
-                                        >
-                                          <img src="/assets/icons/right_arrow.png" />
-                                        </button>
-                                      </div>
-                                      <div className="grid grid-cols-7 gap-x-2 mb-4">
-                                        {daysInWeek.map((day) => (
-                                          <div
-                                            key={day}
-                                            className="bg-primary-base h-[25px] text-lg font-medium text-white p-2 rounded flex items-center justify-center"
+                                      <div className="w-[464px] border border-neutral-20 p-4 rounded mr-4">
+                                        <div className="flex items-center mb-3">
+                                          <button
+                                            onClick={() =>
+                                              changeCalendarPage(-1)
+                                            }
                                           >
-                                            {format(day, "EEEEEE")}
-                                          </div>
-                                        ))}
-                                      </div>
-                                      <div className="grid grid-cols-7 gap-x-3 gap-y-3 2xl:gap-y-[22px]">
-                                        {days}
+                                            <img src="/assets/icons/left_arrow.png" />
+                                          </button>
+                                          <h2 className="text-base 2xl:text-xl text-neutral-100 font-semibold cursor-default mx-[10px]">
+                                            {format(currentDate, "MMMM yyyy")}
+                                          </h2>
+                                          <button
+                                            onClick={() =>
+                                              changeCalendarPage(1)
+                                            }
+                                          >
+                                            <img src="/assets/icons/right_arrow.png" />
+                                          </button>
+                                        </div>
+                                        <div className="grid grid-cols-7 gap-x-2 mb-4">
+                                          {daysInWeek.map((day) => (
+                                            <div
+                                              key={day}
+                                              className="bg-primary-base h-[25px] text-lg font-medium text-white p-2 rounded flex items-center justify-center"
+                                            >
+                                              {format(day, "EEEEEE")}
+                                            </div>
+                                          ))}
+                                        </div>
+                                        <div className="grid grid-cols-7 gap-x-3 gap-y-3 2xl:gap-y-[22px]">
+                                          {days}
+                                        </div>
                                       </div>
                                     </div>
                                     <div className="flex flex-col ml-6">
@@ -698,7 +704,7 @@ export default function ManageSchedule() {
                                       <div className="flex flex-col mt-1 w-full">
                                         <div className="flex mb-1">
                                           <p className="font-normal text-base text-neutral-70">
-                                            Email
+                                            Tittle Schedule
                                           </p>
                                           <p className="font-normal text-base text-error-base">
                                             *
@@ -707,7 +713,7 @@ export default function ManageSchedule() {
                                         <input
                                           className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
                                           type="text"
-                                          placeholder="your email"
+                                          placeholder="Your tittle schedule"
                                         />
                                         <div className="flex items-center mt-3">
                                           <div className="flex items-center mr-6">
