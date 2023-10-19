@@ -296,8 +296,14 @@ export default function LoginMultiAccount() {
           </div>
           <div className="w-full ml-96">
             <button
-              className="w-[200px] h-[35px] my-2 rounded-md border border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
+              className="w-[200px] h-[35px] my-2 rounded-md  border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
               onClick={handleSortStatus}
+              style={{
+                fontFamily: "Arial, sans-serif", // Example font family
+                fontWeight: "bold", // Example font weight
+                color: "#333", // Example text color
+                borderRadius: "5px", // Example border radius
+              }}
             >
               Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
             </button>
