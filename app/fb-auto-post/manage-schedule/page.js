@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import { Tooltip } from "@nextui-org/react";
-import { Radio } from "@material-tailwind/react";
+import ScheduleCalendar from "@/components/dashboard/schedule/scheduleCalendar";
+import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
 import {
   addDays,
   addMonths,
@@ -24,9 +24,30 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 export default function ManageSchedule() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [size, setSize] = React.useState("md");
   const sizes = ["full"];
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [contentModal, setContentModal] = React.useState("");
+  const [radio1Selected, setRadio1Selected] = useState(false);
+  const [radio2Selected, setRadio2Selected] = useState(false);
+
+  const handleRadio1Change = () => {
+    if (radio1Selected) {
+      setRadio1Selected(false);
+    } else {
+      setRadio1Selected(true);
+      setRadio2Selected(false);
+    }
+  };
+
+  const handleRadio2Change = () => {
+    if (radio2Selected) {
+      setRadio2Selected(false);
+    } else {
+      setRadio2Selected(true);
+      setRadio1Selected(false);
+    }
+  };
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const calendarFormat = ["Month", "Week"];
@@ -36,29 +57,11 @@ export default function ManageSchedule() {
   const endOfMonthDate = endOfMonth(currentDate);
   const startOfWeekDate = startOfWeek(currentDate);
 
-  const changeCalendarPage = (direction) => {
-    if (viewMode === "Month") {
-      setCurrentDate(addMonths(currentDate, direction));
-    } else if (viewMode === "Week") {
-      setCurrentDate(addWeeks(currentDate, direction));
-    }
-  };
-
   const prevMonthEndDate = new Date(
     startOfMonthDate.getFullYear(),
     startOfMonthDate.getMonth(),
     0
   ).getDate();
-
-  const daysInMonth = eachDayOfInterval({
-    start: startOfMonthDate,
-    end: endOfMonthDate,
-  });
-
-  const daysInWeek = eachDayOfInterval({
-    start: startOfWeekDate,
-    end: addDays(startOfWeekDate, 6),
-  });
 
   const startDate = startOfMonthDate.getDay();
   const endDate = endOfMonthDate.getDate();
@@ -67,39 +70,6 @@ export default function ManageSchedule() {
   const handleOpen = (size) => {
     setSize(size);
     onOpen();
-  };
-
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isScrollEnabled, setIsScrollEnabled] = useState(false);
-  const handleEditClick = () => {
-    setIsEditMode(!isEditMode);
-    setIsScrollEnabled(!isEditMode);
-  };
-
-  const formatValue = (value) => value.toString().padStart(2, "0");
-  const [time, setTime] = useState(0);
-  const [minute, setMinute] = useState(0);
-
-  const beforeTime = formatValue(time > 0 ? time - 1 : 23);
-  const afterTime = formatValue(time < 23 ? time + 1 : 0);
-  const beforeMinute = formatValue(minute > 0 ? minute - 1 : 59);
-  const afterMinute = formatValue(minute < 59 ? minute + 1 : 0);
-
-  const handleScroll = (e, inputType) => {
-    e.preventDefault();
-    const scrollDirection = e.deltaY > 0 ? 1 : -1;
-
-    if (inputType === "time") {
-      let newValue = time + scrollDirection;
-      if (newValue < 0) newValue = 23;
-      if (newValue > 23) newValue = 0;
-      setTime(newValue);
-    } else if (inputType === "minute") {
-      let newValue = minute + scrollDirection;
-      if (newValue < 0) newValue = 59;
-      if (newValue > 59) newValue = 0;
-      setMinute(newValue);
-    }
   };
 
   const [showAlert, setShowAlert] = useState(false);
@@ -486,17 +456,18 @@ export default function ManageSchedule() {
             Active Scheduled
           </div>
           <div className="w-full ml-96">
-            <select
-              className="w-[200px] h-[35px] my-2 rounded-md border-1 bg-[#DCDDDE] p-2 text-xs text-black"
-              onChange={handleSortStatus}
+            <button
+              className="w-[200px] h-[35px] my-2 rounded-md  border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
+              onClick={handleSortStatus}
+              style={{
+                fontFamily: "Arial, sans-serif", // Example font family
+                fontWeight: "bold", // Example font weight
+                color: "#333", // Example text color
+                borderRadius: "5px", // Example border radius
+              }}
             >
-              <option value="asc">
-                Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
-              </option>
-              <option value="desc">
-                Sort by Status: {sortOrder === "desc" ? "Suspend" : "Active"}
-              </option>
-            </select>
+              Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
+            </button>
           </div>
         </div>
 
@@ -561,215 +532,90 @@ export default function ManageSchedule() {
                           />
                         </Button>
                       ))}
-                      <Modal size={size} isOpen={isOpen} onClose={onClose}>
+                      <Modal
+                        size="5xl"
+                        contentModal={contentModal}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                      >
                         <ModalContent>
                           {(onClose) => (
                             <>
-                              <ModalHeader className="flex gap-1"></ModalHeader>
+                              <ModalHeader>
+                                Determine the schedule date and time
+                              </ModalHeader>
                               <ModalBody>
-                                <div className="flex justify-evenly w-full">
-                                  <div className="w-full flex justify-evenly">
-                                    <div>
-                                      <p className="mb-3 font-semibold text-xl text-neutral-80">
-                                        Determine the schedule date and time{" "}
-                                      </p>
-                                      <div className="w-[464px] border border-neutral-20 p-4 rounded mr-4">
-                                        <div className="flex items-center mb-3">
-                                          <button
-                                            onClick={() =>
-                                              changeCalendarPage(-1)
-                                            }
-                                          >
-                                            <img src="/assets/icons/left_arrow.png" />
-                                          </button>
-                                          <h2 className="text-base 2xl:text-xl text-neutral-100 font-semibold cursor-default mx-[10px]">
-                                            {format(currentDate, "MMMM yyyy")}
-                                          </h2>
-                                          <button
-                                            onClick={() =>
-                                              changeCalendarPage(1)
-                                            }
-                                          >
-                                            <img src="/assets/icons/right_arrow.png" />
-                                          </button>
-                                        </div>
-                                        <div className="grid grid-cols-7 gap-x-2 mb-4">
-                                          {daysInWeek.map((day) => (
-                                            <div
-                                              key={day}
-                                              className="bg-primary-base h-[25px] text-lg font-medium text-white p-2 rounded flex items-center justify-center"
-                                            >
-                                              {format(day, "EEEEEE")}
-                                            </div>
-                                          ))}
-                                        </div>
-                                        <div className="grid grid-cols-7 gap-x-3 gap-y-3 2xl:gap-y-[22px]">
-                                          {days}
-                                        </div>
-                                      </div>
+                                <div className="flex justify-between">
+                                  <div className="w-1/2">
+                                    <div className="p-4 border border-primary-20 rounded-lg">
+                                      <ScheduleCalendar />
                                     </div>
-                                    <div className="flex flex-col ml-6">
-                                      <p className="mb-3 font-semibold text-xl text-neutral-80">
-                                        Enter posting time{" "}
-                                      </p>
-                                      {isEditMode ? (
-                                        <div
-                                          className="mb-4 flex flex-col gap-1 2xl:gap-3 bg-white shadow-lg rounded-lg py-1 2xl:py-2 px-8 cursor-pointer"
-                                          onClick={handleEditClick}
-                                        >
-                                          <div className="flex flex-row px-2 justify-between">
-                                            <div
-                                              className="text-primary-50 font-normal text-base"
-                                              onWheel={(e) =>
-                                                isScrollEnabled &&
-                                                handleScroll(e, "time")
-                                              }
-                                            >
-                                              {beforeTime}
-                                            </div>
-                                            <div
-                                              className="text-primary-50 font-normal text-base"
-                                              onWheel={(e) =>
-                                                isScrollEnabled &&
-                                                handleScroll(e, "minute")
-                                              }
-                                            >
-                                              {beforeMinute}
-                                            </div>
-                                          </div>
-                                          <div className="flex bg-primary-base flex-row px-2 py-1 2xl:py-2 rounded-[5px] justify-between">
-                                            <div
-                                              className="text-neutral-10 font-normal text-base"
-                                              onWheel={(e) =>
-                                                isScrollEnabled &&
-                                                handleScroll(e, "time")
-                                              }
-                                            >
-                                              {formatValue(time)}
-                                            </div>
-                                            <div className="text-neutral-10 font-normal text-base">
-                                              :
-                                            </div>
-                                            <div
-                                              className="text-neutral-10 font-normal text-base"
-                                              onWheel={(e) =>
-                                                isScrollEnabled &&
-                                                handleScroll(e, "minute")
-                                              }
-                                            >
-                                              {formatValue(minute)}
-                                            </div>
-                                          </div>
-                                          <div className="flex flex-row px-2 justify-between">
-                                            <div
-                                              className="text-primary-50 font-normal text-base"
-                                              onWheel={(e) =>
-                                                isScrollEnabled &&
-                                                handleScroll(e, "time")
-                                              }
-                                            >
-                                              {afterTime}
-                                            </div>
-                                            <div
-                                              className="text-primary-50 font-normal text-base"
-                                              onWheel={(e) =>
-                                                isScrollEnabled &&
-                                                handleScroll(e, "minute")
-                                              }
-                                            >
-                                              {afterMinute}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <div
-                                          className="md:flex flex-row mb-4 justify-start cursor-pointer"
-                                          onClick={handleEditClick}
-                                        >
-                                          <div className="flex flex-col items-center justify-center gap-2">
-                                            <div className="border border-[#CFCFCF] text-primary-50 p-4 rounded-md text-3xl 2xl:text-6xl font-bold">
-                                              <div className="w-[50px] h-[60px] 2xl:w-[71px] 2xl:h-[84px] flex items-center justify-center">
-                                                {formatValue(time)}
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <p className="mx-2 flex items-center text-primary-50 font-bold text-xl">
-                                            :
-                                          </p>
-                                          <div className="flex flex-col items-center justify-center gap-2">
-                                            <div className="border border-[#CFCFCF] text-primary-50 p-4 rounded-md text-3xl 2xl:text-6xl font-bold cursor-default">
-                                              <div className="w-[50px] h-[60px] 2xl:w-[71px] 2xl:h-[84px] flex items-center justify-center">
-                                                {formatValue(minute)}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      <div className="flex flex-col mt-1 w-full">
-                                        <div className="flex mb-1">
-                                          <p className="font-normal text-base text-neutral-70">
-                                            Tittle Schedule
-                                          </p>
-                                          <p className="font-normal text-base text-error-base">
-                                            *
-                                          </p>
-                                        </div>
+                                  </div>
+                                  <div className="w-1/3">
+                                    <ScheduleTime />
+                                    <div className="flex flex-col w-full mb-2">
+                                      <div className="flex mb-1">
+                                        <p className="font-normal text-base text-neutral-70">
+                                          Title Schedule
+                                        </p>
+                                        <p className="font-normal text-base text-error-base">
+                                          *
+                                        </p>
+                                      </div>
+                                      <input
+                                        className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
+                                        type="text"
+                                        placeholder="Your title schedule"
+                                      />
+                                    </div>
+                                    <div className="w-full flex justify-start items-center">
+                                      <div className="flex mr-4">
                                         <input
-                                          className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
-                                          type="text"
-                                          placeholder="Your tittle schedule"
+                                          type="radio"
+                                          id="radio1"
+                                          name="radios"
+                                          onChange={handleRadio1Change}
+                                          checked={radio1Selected}
                                         />
-                                        <div className="flex items-center mt-3">
-                                          <div className="flex items-center mr-6">
-                                            <input
-                                              type="radio"
-                                              id="option1"
-                                              name="radiobutton"
-                                              value="option1"
-                                              className="h-4 w-4 text-primary-base"
-                                            />
-                                            <label
-                                              htmlFor="option1"
-                                              className="ml-2 text-base text-neutral-70"
-                                            >
-                                              Today only
-                                            </label>
-                                          </div>
-                                          <div className="flex items-center">
-                                            <input
-                                              type="radio"
-                                              id="option2"
-                                              name="radiobutton"
-                                              value="option2"
-                                              className="h-4 w-4 text-primary-base"
-                                            />
-                                            <label
-                                              htmlFor="option2"
-                                              className="ml-2 text-base text-neutral-70"
-                                            >
-                                              Repeat on the same date
-                                            </label>
-                                          </div>
-                                        </div>
+                                        <label htmlFor="radio1">
+                                          <span className="ml-2 text-[12px] font-normal text-neutral-70">
+                                            Today only
+                                          </span>
+                                        </label>
+                                      </div>
+                                      <div className="flex">
+                                        <input
+                                          type="radio"
+                                          id="radio2"
+                                          name="radios"
+                                          onChange={handleRadio2Change}
+                                          checked={radio2Selected}
+                                        />
+                                        <label htmlFor="radio2">
+                                          <span className="ml-2 text-[12px] font-normal text-neutral-70">
+                                            Repeat on the same date
+                                          </span>
+                                        </label>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </ModalBody>
-                              <ModalFooter className="mb-96">
-                                <Button
-                                  className="bg-[#EDEDED] w-[100px]  mt-3 rounded-md py-2 px-4 text-xs font-semibold text-black"
-                                  onPress={onClose}
-                                >
-                                  Clear
-                                </Button>
-                                <Button
-                                  className="bg-[#2652FF] w-[100px]  mt-3 rounded-md py-2 px-4 text-xs font-semibold text-white"
-                                  onClick={Alert3}
-                                >
-                                  Update
-                                </Button>
+                              <ModalFooter>
+                                <>
+                                  <button
+                                    className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-[#EDEDED] text-neutral-base rounded-md"
+                                    onClick={onClose}
+                                  >
+                                    Clear
+                                  </button>
+                                  <button
+                                    className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
+                                    onClick={onClose}
+                                  >
+                                    Save
+                                  </button>
+                                </>
                               </ModalFooter>
                             </>
                           )}
