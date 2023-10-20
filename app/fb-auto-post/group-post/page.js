@@ -3,6 +3,7 @@ import ChooseAccount from "@/components/dashboard/choose-account";
 import ChooseGroup from "@/components/dashboard/choose-group";
 import ScheduleCalendar from "@/components/dashboard/schedule/scheduleCalendar";
 import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
+import TextEditor from "@/components/dashboard/text-editor/editor";
 import TextEditor2 from "@/components/dashboard/text-editor/editor2";
 import SampleText from "@/components/dashboard/text-editor/sampletext";
 import ImageUpload from "@/components/fb-image_upload/imageUpload";
@@ -191,6 +192,7 @@ export default function GroupPost() {
                   <p className="font-normal text-base text-error-base">*</p>
                 </div>
               </div>
+              <TextEditor/>
               <p className="flex justify-end text-xs font-normal text-neutral-70 mb-2">
                 don&#39;t have a caption yet?&nbsp;
                 <button onClick={() => handleOpenModal("caption")}>

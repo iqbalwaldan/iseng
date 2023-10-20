@@ -22,17 +22,21 @@
 @media screen and (min-width: 768px){
   #editor{
     height: 200px;
+    width: 100%;
   }
   #editor2{
     height: 200px;
+    width: 100%;
   }
 }
 
 @media screen and (min-width: 1536px){
   #editor{
     height: 324px;
+    width: 100%;
   }
   #editor2{
     height: 324px;
+    width: 100%;
   }
 }
