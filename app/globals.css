@@ -4,20 +4,35 @@
 
 /* width */
 ::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #d6d6d6;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #aaa9a9;
-  }
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #f8f6f6;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #e9e7e7;
+}
+
+.sweet_titleImportant{color:#101828 !important; margin: auto !important; font-size: 18px !important; font-weight: 600 !important;}
+.sweet_textImportant{color:#667085 !important; margin: auto !important; font-size: 14px !important; font-weight: 400 !important; margin-top: 16px !important; max-width: 352px;}
+
+.alert-btn{
+  color: #fff;
+  background-color: #2652FF;
+  font-size: 16px;
+  font-weight: 500;
+  width: 352px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+
