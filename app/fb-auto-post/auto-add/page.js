@@ -63,9 +63,9 @@ export default function AutoAdd() {
               Click here to add all members of the group who have not yet joined
             </p>
 
-            <button className="text-base bg-[#2652FF] text-white rounded-md px-3 py-1 mt-3">
-              Unjoined Groups
-            </button>
+            <a className="text-base bg-[#2652FF] text-white rounded-lg px-3 py-1 mt-3" href="/fb-auto-post/halaman-auto-add-1">
+            Unjoined Groups
+            </a>
           </div>
         </div>
       </div>

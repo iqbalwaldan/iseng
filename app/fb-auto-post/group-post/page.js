@@ -262,14 +262,14 @@ export default function GroupPost() {
             </h1>
             <div className="flex items-center justify-evenly">
               <button
-                className="flex items-center justify-center bcursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
+                className="flex items-center justify-center cursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                 onClick={() => handleOpenModal("schedule")}
               >
                 start
               </button>
               <div className="border-[3px] border-neutral-30 w-[29px] mx-2"></div>
               <button
-                className="flex items-center justify-center bcursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
+                className="flex items-center justify-center cursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                 onClick={() => handleOpenModal("schedule")}
               >
                 end
@@ -410,7 +410,7 @@ export default function GroupPost() {
                             </div>
                             <div className="w-[55%]">
                               <h1 className="text-base 2xl:text-xl font-semibold text-neutral-90 mb-2 2xl:mb-4">
-                                Our Recomendations
+                                Our Recommendations
                               </h1>
                               <div className="grid grid-cols-2 grid-rows-3 gap-4">
                                 <div className="w-full">

@@ -28,6 +28,7 @@ const JoinAllGroupData = [
     category: "Public",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -36,6 +37,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -44,6 +46,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -52,6 +55,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -60,6 +64,7 @@ const JoinAllGroupData = [
     category: "Public",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -68,6 +73,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -76,6 +82,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -84,6 +91,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -92,6 +100,7 @@ const JoinAllGroupData = [
     category: "Public",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -100,6 +109,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -108,6 +118,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -116,6 +127,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -124,6 +136,7 @@ const JoinAllGroupData = [
     category: "Public",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -132,6 +145,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -140,6 +154,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -148,6 +163,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -156,6 +172,7 @@ const JoinAllGroupData = [
     category: "Public",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -164,6 +181,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -172,6 +190,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -180,6 +199,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -188,6 +208,7 @@ const JoinAllGroupData = [
     category: "Public",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -196,6 +217,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
   {
     id: "71289312936",
@@ -204,6 +226,7 @@ const JoinAllGroupData = [
     category: "Privat",
     member: "9,3 rb",
     post: "10+",
+    desc: "Kolektor Hotwheels Indonesia tempat para kolektor hotwheels di indonesia berjualan produk hotwheels di indonesia",
   },
 ];
 
@@ -298,7 +321,11 @@ export default function HalamanAutoAdd() {
                     &nbsp;
                     <p> postingan per hari</p>
                   </div>
-                  {item.desc && <p className="text-xs font-light text-neutral-60">{item.desc}</p>}
+                  {item.desc && (
+                    <p className="text-xs font-light text-neutral-60">
+                      {item.desc}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
