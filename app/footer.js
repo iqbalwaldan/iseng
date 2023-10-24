@@ -72,8 +72,8 @@ export default function Footer() {
           <Link href="">
             <p className="text-xl font-normal text-white">News</p>
           </Link>
-          <Link href="">
-            <p className="text-xl font-normal text-white">Support</p>
+          <Link href="/privacy-policy">
+            <p className="text-xl font-normal text-white">Privacy Policy</p>
           </Link>
         </div>
         <div className="flex flex-col gap-4">

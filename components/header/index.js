@@ -16,6 +16,7 @@ export default function Header({ title }) {
     setIsOpen(!isOpen);
   };
 
+
   return (
     <header className="sticky top-0 z-50 flex w-full h-[86px] py-4 bg-white">
       <div className="flex flex-grow items-center gap-2 justify-between px-8">
