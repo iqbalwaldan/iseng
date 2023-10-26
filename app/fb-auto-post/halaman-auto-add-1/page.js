@@ -119,6 +119,42 @@ export const groupData = [
       name: "Example Account Data",
       category: "just follow",
     },
+    {
+      id: "71289312936",
+      images: "fb_pp1.png",
+      name: "Example Account Data",
+      category: "can add",
+    },
+    {
+      id: "71289312936",
+      images: "fb_pp1.png",
+      name: "Example Account Data",
+      category: "just follow",
+    },
+    {
+      id: "71289312936",
+      images: "fb_pp1.png",
+      name: "Example Account Data",
+      category: "can add",
+    },
+    {
+      id: "71289312936",
+      images: "fb_pp1.png",
+      name: "Example Account Data",
+      category: "just follow",
+    },
+    {
+      id: "71289312936",
+      images: "fb_pp1.png",
+      name: "Example Account Data",
+      category: "can add",
+    },
+    {
+      id: "71289312936",
+      images: "fb_pp1.png",
+      name: "Example Account Data",
+      category: "just follow",
+    },
   ];
 
 export default function HalamanAutoAdd1() {
@@ -229,10 +265,10 @@ export default function HalamanAutoAdd1() {
   };
 
   return (
-    <div className="flex h-1/2 2xl:h-[458px] w-full bg-white">
-      <div className="w-[359px] p-2">
-        <div className="text-lg font-semibold text-black mb-4">Choose Group</div>
-        <div className="overflow-y-auto max-h-[220px] 2xl:max-h-[403px]">
+    <div className="h-full w-full flex">
+      <div className="h-full w-[360px] bg-white border border-gray-300 rounded-md">
+        <div className="text-lg font-semibold text-black mb-4 ml-3">Choose Group</div>
+        <div className="">
           <div className="relative mb-3">
             <input
               className="pl-10 bg-[#F8F8F8] text-xs 2xl:text-base font-normal placeholder:text-xs 2xl:placeholder:text-base placeholder:font-normal text-neutral-60 focus:outline-none h-9 2xl:h-12 rounded-md w-full"
@@ -243,7 +279,7 @@ export default function HalamanAutoAdd1() {
               <img src="/assets/icons/search-icon.png" alt="search icon" />
             </div>
           </div>
-          <div className="flex flex-col gap-1 2xl:gap-3">
+          <div className="flex flex-col gap-1 2xl:gap-3 overflow-y-auto max-h-[410px] 2xl:max-h-[810px]">
             {groupData.map((item) => (
               <div key={item.id}>
                 <div className="border border-neutral-20 p-1 rounded flex flex-row justify-between items-center cursor-pointer">
