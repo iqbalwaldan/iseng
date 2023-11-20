@@ -1,9 +1,8 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
-import { render } from "react-dom";
 
 export default function Reminder() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -120,33 +119,32 @@ export default function Reminder() {
               <span className="font-normal text-base text-error-base">*</span>
             </label>
             <div className="flex items-center relative">
-            <input
-              onClick={toggleDropdown}
-              className="cursor-pointer border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-[23%] h-12 rounded-l-md text-base font-light"
-              type="text"
-              value={selectedCode}
-              readOnly
-            />
-            {isDropdownOpen && (
-              <div className="absolute mt-2 w-[20%] top-9 bg-white border border-[#CFCFCF] shadow-lg rounded-b-md">
-                {countryCodes.map((code) => (
-                  <div
-                    key={code}
-                    onClick={() => handleCodeSelect(code)}
-                    className="cursor-pointer p-2 hover:bg-gray-200"
-                  >
-                    {code}
-                  </div>
-                ))}
-              </div>
-            )}
-            <input
-              className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-full h-12 rounded-r-md text-base font-light"
-              type="text"
-              placeholder="your phone number"
-            />
+              <input
+                onClick={toggleDropdown}
+                className="cursor-pointer border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-[23%] h-12 rounded-l-md text-base font-light"
+                type="text"
+                value={selectedCode}
+                readOnly
+              />
+              {isDropdownOpen && (
+                <div className="absolute mt-2 w-[20%] top-9 bg-white border border-[#CFCFCF] shadow-lg rounded-b-md">
+                  {countryCodes.map((code) => (
+                    <div
+                      key={code}
+                      onClick={() => handleCodeSelect(code)}
+                      className="cursor-pointer p-2 hover:bg-gray-200"
+                    >
+                      {code}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <input
+                className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-full h-12 rounded-r-md text-base font-light"
+                type="text"
+                placeholder="your phone number"
+              />
             </div>
-            
           </div>
 
           <div className="w-full px-3 mt-4">

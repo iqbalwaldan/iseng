@@ -16,7 +16,6 @@ export default function Header({ title }) {
     setIsOpen(!isOpen);
   };
 
-
   return (
     <header className="sticky top-0 z-50 flex w-full h-[86px] py-4 bg-white">
       <div className="flex flex-grow items-center gap-2 justify-between px-8">
@@ -41,8 +40,8 @@ export default function Header({ title }) {
             {isOpen && (
               <div className="absolute top-9 -left-5 -translate-x-1/2 bg-white border border-gray-300 shadow-lg rounded-md py-2">
                 <ul>
-                  <Link href='/fb-auto-post/profile'>
-                  <li className="px-4 py-2">Profile</li>
+                  <Link href="/fb-auto-post/profile">
+                    <li className="px-4 py-2">Profile</li>
                   </Link>
                   <li className="px-4 py-2">Settings</li>
                 </ul>

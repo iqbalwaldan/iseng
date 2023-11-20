@@ -17,7 +17,8 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React, { useState } from "react";
-import {FaCheck} from 'react-icons/fa'
+import { FaCheck } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const hashTagData = [
   {
@@ -138,7 +139,7 @@ export default function GroupPost() {
     }
   };
 
-  const categorySelect = ["Cat1", "Cat2","Cat3","Cat4","Cat5",];
+  const categorySelect = ["Cat1", "Cat2", "Cat3", "Cat4", "Cat5"];
   const [selectCategory, setSelectCategory] = useState("Select category");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleDropdown = () => {
@@ -147,6 +148,65 @@ export default function GroupPost() {
   const handleCalendarSelect = (selectedCategory) => {
     setSelectCategory(selectedCategory);
     setIsDropdownOpen(false);
+  };
+
+  const [success, setSuccess] = useState(true);
+
+  const handleSaveButtonClick = () => {
+    Swal.fire({
+      imageUrl: "/assets/icons/alert-circle-warning.png",
+      imageHeight: 70,
+      imageWidth: 70,
+      title: "Successfully Sending Inbox to Friendlist",
+      text: "You have successfully sent an inbox to your friendlist",
+      showCancelButton: true,
+      cancelButtonText: "cancel",
+      confirmButtonText: "save",
+      buttonsStyling: false,
+      reverseButtons: true,
+      customClass: {
+        title: "sweet_titleImportant",
+        htmlContainer: "sweet_textImportant",
+        cancelButton: "alert-btn-cancel",
+        confirmButton: "alert-btn-dialog",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (success) {
+          Swal.fire({
+            imageUrl: "/assets/icons/alert-circle-success.png",
+            imageHeight: 70,
+            imageWidth: 70,
+            title: "Successfully Sending Inbox to Friendlist",
+            text: "You have successfully sent an inbox to your friendlist",
+            confirmButtonText: "Okey",
+            buttonsStyling: false,
+            customClass: {
+              title: "sweet_titleImportant",
+              htmlContainer: "sweet_textImportant",
+              confirmButton: "alert-btn",
+            },
+          });
+        } else {
+          Swal.fire({
+            imageUrl: "/assets/icons/alert-circle-danger.png",
+            imageHeight: 70,
+            imageWidth: 70,
+            title: "Failed Sending Inbox to Friendlist",
+            text: "Sorry, the inbox sending process failed due to a problem. Please try again later",
+            confirmButtonText: "Try Again",
+            buttonsStyling: false,
+            customClass: {
+              title: "sweet_titleImportant",
+              htmlContainer: "sweet_textImportant",
+              confirmButton: "alert-btn",
+            },
+          });
+        }
+      } else if (result.isDenied) {
+        onclose();
+      }
+    });
   };
 
   return (
@@ -192,7 +252,7 @@ export default function GroupPost() {
                   <p className="font-normal text-base text-error-base">*</p>
                 </div>
               </div>
-              <TextEditor/>
+              <TextEditor />
               <p className="flex justify-end text-xs font-normal text-neutral-70 mb-2">
                 don&#39;t have a caption yet?&nbsp;
                 <button onClick={() => handleOpenModal("caption")}>
@@ -374,29 +434,39 @@ export default function GroupPost() {
                                     *
                                   </p>
                                 </div>
-                                <div onClick={toggleDropdown} className="relative cursor-pointer flex items-center border border-[#CFCFCF] p-3 text-neutral-70 h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light">
-                                  <p className={`${selectCategory === "Select category" ? "text-neutral-30" : "text-neutral-90"}`}>
+                                <div
+                                  onClick={toggleDropdown}
+                                  className="relative cursor-pointer flex items-center border border-[#CFCFCF] p-3 text-neutral-70 h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
+                                >
+                                  <p
+                                    className={`${
+                                      selectCategory === "Select category"
+                                        ? "text-neutral-30"
+                                        : "text-neutral-90"
+                                    }`}
+                                  >
                                     {selectCategory}
                                   </p>
-                                  
+
                                   {isDropdownOpen && (
-                                  <div className="w-full absolute z-[12] mt-2 top-9 right-0 bg-white border border-[#CFCFCF] shadow-lg rounded-md">
-                                    {categorySelect.map((category) => (
-                                      <div
-                                        key={category}
-                                        onClick={() =>
-                                          handleCalendarSelect(category)
-                                        }
-                                        className="w-full cursor-pointer text-sm font-normal text-neutral-90 p-2 flex items-center justify-between hover:bg-slate-300"
-                                      >
-                                        {category}
-                                        {category === selectCategory && <FaCheck color="green" />}
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
+                                    <div className="w-full absolute z-[12] mt-2 top-9 right-0 bg-white border border-[#CFCFCF] shadow-lg rounded-md">
+                                      {categorySelect.map((category) => (
+                                        <div
+                                          key={category}
+                                          onClick={() =>
+                                            handleCalendarSelect(category)
+                                          }
+                                          className="w-full cursor-pointer text-sm font-normal text-neutral-90 p-2 flex items-center justify-between hover:bg-slate-300"
+                                        >
+                                          {category}
+                                          {category === selectCategory && (
+                                            <FaCheck color="green" />
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
                                 </div>
-                                
                               </div>
                               <div className="flex flex-col w-full mb-2">
                                 <div className="flex mb-1">
@@ -528,7 +598,7 @@ export default function GroupPost() {
                             </button>
                             <button
                               className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
-                              onClick={onClose}
+                              onClick={handleSaveButtonClick}
                             >
                               Save
                             </button>

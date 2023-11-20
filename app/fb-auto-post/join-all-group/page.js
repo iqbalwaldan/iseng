@@ -13,7 +13,23 @@ import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
 
 const JoinAllGroupData = [
   {
-    id: "1",
+    id: 1,
+    image: "fb_pp1.png",
+    name: "Hotwheels Rare",
+    category: "Privat",
+    member: "9,3 rb",
+    post: "10+",
+  },
+  {
+    id: 2,
+    image: "fb_pp1.png",
+    name: "Hotwheels Ultimate",
+    category: "Public",
+    member: "9,3 rb",
+    post: "10+",
+  },
+  {
+    id: 3,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -21,7 +37,23 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "2",
+    id: 4,
+    image: "fb_pp1.png",
+    name: "Hotwheels Sale Indonesia",
+    category: "Privat",
+    member: "9,3 rb",
+    post: "10+",
+  },
+  {
+    id: 5,
+    image: "fb_pp1.png",
+    name: "Hotwheels Ultimate",
+    category: "Privat",
+    member: "9,3 rb",
+    post: "10+",
+  },
+  {
+    id: 6,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Public",
@@ -29,7 +61,15 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "3",
+    id: 7,
+    image: "fb_pp1.png",
+    name: "Hotwheels Ultimate",
+    category: "Privat",
+    member: "9,3 rb",
+    post: "10+",
+  },
+  {
+    id: 8,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -37,7 +77,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "4",
+    id: 9,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -45,15 +85,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Hotwheels Sale Indonesia",
-    category: "Privat",
-    member: "9,3 rb",
-    post: "10+",
-  },
-  {
-    id: "2",
+    id: 10,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Public",
@@ -61,7 +93,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "3",
+    id: 11,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -69,7 +101,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "4",
+    id: 12,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -77,7 +109,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "1",
+    id: 13,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -85,7 +117,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "2",
+    id: 14,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Public",
@@ -93,7 +125,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "3",
+    id: 15,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -101,7 +133,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "4",
+    id: 16,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -109,7 +141,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "1",
+    id: 17,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -117,7 +149,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "2",
+    id: 18,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Public",
@@ -125,7 +157,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "3",
+    id: 19,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -133,7 +165,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "4",
+    id: 20,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -141,7 +173,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "1",
+    id: 21,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -149,7 +181,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "2",
+    id: 22,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Public",
@@ -157,7 +189,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "3",
+    id: 23,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -165,39 +197,7 @@ const JoinAllGroupData = [
     post: "10+",
   },
   {
-    id: "4",
-    image: "fb_pp1.png",
-    name: "Hotwheels Sale Indonesia",
-    category: "Privat",
-    member: "9,3 rb",
-    post: "10+",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Hotwheels Sale Indonesia",
-    category: "Privat",
-    member: "9,3 rb",
-    post: "10+",
-  },
-  {
-    id: "2",
-    image: "fb_pp1.png",
-    name: "Hotwheels Sale Indonesia",
-    category: "Public",
-    member: "9,3 rb",
-    post: "10+",
-  },
-  {
-    id: "3",
-    image: "fb_pp1.png",
-    name: "Hotwheels Sale Indonesia",
-    category: "Privat",
-    member: "9,3 rb",
-    post: "10+",
-  },
-  {
-    id: "4",
+    id: 24,
     image: "fb_pp1.png",
     name: "Hotwheels Sale Indonesia",
     category: "Privat",
@@ -258,6 +258,22 @@ export default function JoinAllGroup() {
     setSelectAllChecked(allChecked);
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState(JoinAllGroupData);
+
+  // Fungsi pencarian
+  const handleSearch = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+
+    // Filter data berdasarkan nama
+    const filteredResults = JoinAllGroupData.filter((item) => {
+      return item.name.toLowerCase().includes(searchValue);
+    });
+
+    setSearchResults(filteredResults);
+  };
+
   return (
     <div className="w-full h-full">
       <div className="relative w-1/2 mb-2">
@@ -265,6 +281,8 @@ export default function JoinAllGroup() {
           className="pl-10 bg-[#F8F8F8] text-xs 2xl:text-base font-normal placeholder:text-xs 2xl:placeholder:text-base placeholder:font-normal text-neutral-60 focus:outline-none h-9 2xl:h-12 rounded-md w-full"
           type="text"
           placeholder="Search"
+          onChange={handleSearch}
+          value={searchTerm}
         />
         <div className="absolute top-1/2 -translate-y-1/2 left-4">
           <img src="/assets/icons/search-icon.png" alt="search icon" />
@@ -273,7 +291,7 @@ export default function JoinAllGroup() {
       <div className="flex">
         <div className="w-1/2 h-full">
           <div className="w-full max-h-[565px] 2xl:max-h-[677px] border rounded-lg flex flex-col items-center gap-4 overflow-y-auto mb-3">
-            {JoinAllGroupData.map((item) => (
+            {searchResults.map((item) => (
               <div
                 key={item.id}
                 className="flex flex-row p-2 w-full items-center border border-neutral-20 rounded-lg"

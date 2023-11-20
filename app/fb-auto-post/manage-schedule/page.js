@@ -449,13 +449,13 @@ export default function ManageSchedule() {
 
   return (
     <div className="flex w-full md:flex-row">
-      <div className="flex flex-col w-[69%]">
+      <div className="flex flex-col w-full">
         <div className="w-full px-3 ml-1">All Schedule</div>
-        <div className="md:flex w-full flex-row md:justify-start">
+        <div className="md:flex w-full flex-row justify-between">
           <div className="w-full px-3 ml-1 mt-4 text-success-50">
             Active Scheduled
           </div>
-          <div className="w-full ml-96">
+          <div className="w-full">
             <button
               className="w-[200px] h-[35px] my-2 rounded-md  border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
               onClick={handleSortStatus}

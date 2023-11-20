@@ -13,99 +13,99 @@ import {
 import ScheduleCalendar from "@/components/dashboard/schedule/scheduleCalendar";
 import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
 
-const FriendListData = [
+export const FriendListData = [
   {
-    id: "1",
+    id: 1,
+    image: "fb_pp1.png",
+    name: "Budi Santoso",
+  },
+  {
+    id: 2,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 3,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 4,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 5,
+    image: "fb_pp1.png",
+    name: "Budi Santoso",
+  },
+  {
+    id: 6,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 7,
+    image: "fb_pp1.png",
+    name: "Kim Jong Un",
+  },
+  {
+    id: 8,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 9,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 10,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 11,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 12,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 13,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 14,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 15,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 16,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 17,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
+    id: 18,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
   {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
+    id: 19,
     image: "fb_pp1.png",
     name: "Rina Fitriani",
   },
@@ -171,6 +171,22 @@ export default function FriendList() {
     }
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState(FriendListData);
+
+  // Fungsi pencarian
+  const handleSearch = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+
+    // Filter data berdasarkan nama
+    const filteredResults = FriendListData.filter((item) => {
+      return item.name.toLowerCase().includes(searchValue);
+    });
+
+    setSearchResults(filteredResults);
+  };
+
   return (
     <div className="h-full w-full flex">
       <div className="h-full w-[360px] bg-white">
@@ -183,13 +199,15 @@ export default function FriendList() {
               className="pl-10 bg-[#F8F8F8] text-xs 2xl:text-base font-normal placeholder:text-xs 2xl:placeholder:text-base placeholder:font-normal text-neutral-60 focus:outline-none h-9 2xl:h-12 rounded-md w-full"
               type="text"
               placeholder="Search"
+              onChange={handleSearch}
+              value={searchTerm}
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-4">
               <img src="/assets/icons/search-icon.png" alt="search icon" />
             </div>
           </div>
           <div className="flex flex-col gap-1 2xl:gap-3 overflow-y-auto max-h-[410px] 2xl:max-h-[810px]">
-            {FriendListData.map((item) => (
+            {searchResults.map((item) => (
               <div key={item.id}>
                 <div className="p-1 rounded flex flex-row justify-between items-center">
                   <div className="flex items-center">

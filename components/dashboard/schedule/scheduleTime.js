@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 
 export default function ScheduleTime() {
   const [time, setTime] = useState(0);
@@ -44,47 +44,59 @@ export default function ScheduleTime() {
           className="mb-4 flex flex-col gap-1 2xl:gap-3 bg-white shadow-lg rounded-lg py-1 2xl:py-2 px-8 cursor-pointer"
           onClick={handleEditClick}
         >
-          <div className="flex flex-row px-2 justify-between">
+          <div className="flex flex-row px-2 justify-between w-full">
             <div
-              className="text-primary-50 font-normal text-base"
+              className="w-1/2"
               onWheel={(e) => isScrollEnabled && handleScroll(e, "time")}
             >
-              {beforeTime}
+              <p className="text-primary-50 font-normal text-base">
+                {beforeTime}
+              </p>
             </div>
             <div
-              className="text-primary-50 font-normal text-base"
+              className="w-1/2"
               onWheel={(e) => isScrollEnabled && handleScroll(e, "minute")}
             >
-              {beforeMinute}
+              <p className="text-primary-50 font-normal text-base text-end">
+                {beforeMinute}
+              </p>
             </div>
           </div>
           <div className="flex bg-primary-base flex-row px-2 py-1 2xl:py-2 rounded-[5px] justify-between">
             <div
-              className="text-neutral-10 font-normal text-base"
+              className="w-1/2"
               onWheel={(e) => isScrollEnabled && handleScroll(e, "time")}
             >
-              {formatValue(time)}
+              <p className="text-neutral-10 font-normal text-base">
+                {formatValue(time)}
+              </p>
             </div>
             <div className="text-neutral-10 font-normal text-base">:</div>
             <div
-              className="text-neutral-10 font-normal text-base"
+              className="w-1/2"
               onWheel={(e) => isScrollEnabled && handleScroll(e, "minute")}
             >
-              {formatValue(minute)}
+              <p className="text-neutral-10 font-normal text-base text-end">
+                {formatValue(minute)}
+              </p>
             </div>
           </div>
           <div className="flex flex-row px-2 justify-between">
             <div
-              className="text-primary-50 font-normal text-base"
+              className="w-1/2"
               onWheel={(e) => isScrollEnabled && handleScroll(e, "time")}
             >
-              {afterTime}
+              <p className="text-primary-50 font-normal text-base">
+                {afterTime}
+              </p>
             </div>
             <div
-              className="text-primary-50 font-normal text-base"
+              className="w-1/2"
               onWheel={(e) => isScrollEnabled && handleScroll(e, "minute")}
             >
-              {afterMinute}
+              <p className="text-primary-50 font-normal text-base text-end">
+                {afterMinute}
+              </p>
             </div>
           </div>
         </div>

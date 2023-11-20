@@ -15,104 +15,7 @@ import {
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-
-const FriendListData = [
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-  {
-    id: "1",
-    image: "fb_pp1.png",
-    name: "Rina Fitriani",
-  },
-];
+import { FriendListData } from "../friend-list/page";
 
 export default function MemberGroups() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -233,6 +136,32 @@ export default function MemberGroups() {
     }, 15);
   };
 
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+  const [checkboxes, setCheckboxes] = useState(FriendListData.map(() => false));
+
+  // Event handler for "Select All" button
+  const handleSelectAll = () => {
+    setSelectAllChecked(true);
+    setCheckboxes(FriendListData.map(() => true));
+  };
+
+  // Event handler for "Deselect All" button
+  const handleDeselectAll = () => {
+    setSelectAllChecked(false);
+    setCheckboxes(FriendListData.map(() => false));
+  };
+
+  // Event handler for individual checkboxes
+  const handleCheckboxChange = (index) => {
+    const newCheckboxes = [...checkboxes];
+    newCheckboxes[index] = !newCheckboxes[index];
+    setCheckboxes(newCheckboxes);
+
+    // Check if all checkboxes are selected
+    const allChecked = newCheckboxes.every((checkbox) => checkbox);
+    setSelectAllChecked(allChecked);
+  };
+
   return (
     <div className="h-full w-full flex">
       <div className="w-[360px] h-full mr-6">
@@ -252,7 +181,7 @@ export default function MemberGroups() {
               Choose Account
             </div>
             <div className="flex flex-col gap-1 2xl:gap-3 overflow-y-auto max-h-[395px] 2xl:max-h-[740px] pr-1">
-              {FriendListData.map((item) => (
+              {FriendListData.map((item, index) => (
                 <div key={item.id}>
                   <div className="p-1 border border-neutral-10 rounded flex flex-row justify-between items-center">
                     <div className="flex items-center">
@@ -265,15 +194,22 @@ export default function MemberGroups() {
                         </p>
                       </div>
                     </div>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={checkboxes[index]}
+                      onChange={() => handleCheckboxChange(index)}
+                    />
                   </div>
                 </div>
               ))}
             </div>
           </div>
           <div className="w-full flex justify-end">
-            <button className="bg-primary-10 rounded-md px-6 py-2 mt-6 text-sm font-medium text-primary-base">
-              Select all
+            <button
+              className="bg-primary-10 rounded-md px-6 py-2 mt-6 text-sm font-medium text-primary-base"
+              onClick={selectAllChecked ? handleDeselectAll : handleSelectAll}
+            >
+              {selectAllChecked ? "Deselect All" : "Select All"}
             </button>
           </div>
           <div>

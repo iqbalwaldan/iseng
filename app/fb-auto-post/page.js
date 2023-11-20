@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Calendar from "@/components/dashboard/calendar";
 import ChartActiveAccount from "@/components/dashboard/chart/chart-active-account";
 import ChartGroupPost from "@/components/dashboard/chart/chart-group-post";
@@ -7,121 +7,121 @@ import ChartSuspendAccount from "@/components/dashboard/chart/chart-suspend-acco
 
 export const LinkedAccountData = [
   {
-    id: "1",
+    id: 1,
     images: "fb_pp1.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: "2",
+    id: 2,
     images: "fb_pp2.png",
     name: "Maya Wulandari",
     status: "suspend",
   },
   {
-    id: "3",
+    id: 3,
     images: "fb_pp3.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: "4",
+    id: 4,
     images: "fb_pp4.png",
     name: "Budi Santoso",
     status: "active",
   },
   {
-    id: "5",
+    id: 5,
     images: "fb_pp5.png",
     name: "Agus Widodo",
     status: "suspend",
   },
   {
-    id: "6",
+    id: 6,
     images: "fb_pp6.png",
     name: "Dian Purnama",
     status: "suspend",
   },
   {
-    id: "7",
+    id: 7,
     images: "fb_pp7.png",
     name: "Rini Susanti",
     status: "suspend",
   },
   {
-    id: "8",
+    id: 8,
     images: "fb_pp8.png",
     name: "Siti Rahmawati",
     status: "suspend",
   },
   {
-    id: "9",
+    id: 9,
     images: "fb_pp9.png",
     name: "Dewi Kusuma",
     status: "active",
   },
   {
-    id: "10",
+    id: 10,
     images: "fb_pp10.png",
     name: "Andi Rahman",
     status: "active",
   },
   {
-    id: "11",
+    id: 11,
     images: "fb_pp1.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: "12",
+    id: 12,
     images: "fb_pp2.png",
     name: "Maya Wulandari",
     status: "suspend",
   },
   {
-    id: "13",
+    id: 13,
     images: "fb_pp3.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: "14",
+    id: 14,
     images: "fb_pp4.png",
     name: "Budi Santoso",
     status: "active",
   },
   {
-    id: "15",
+    id: 15,
     images: "fb_pp5.png",
     name: "Agus Widodo",
     status: "suspend",
   },
   {
-    id: "16",
+    id: 16,
     images: "fb_pp6.png",
     name: "Dian Purnama",
     status: "suspend",
   },
   {
-    id: "17",
+    id: 17,
     images: "fb_pp7.png",
     name: "Rini Susanti",
     status: "suspend",
   },
   {
-    id: "18",
+    id: 18,
     images: "fb_pp8.png",
     name: "Siti Rahmawati",
     status: "suspend",
   },
   {
-    id: "19",
+    id: 19,
     images: "fb_pp9.png",
     name: "Dewi Kusuma",
     status: "active",
   },
   {
-    id: "20",
+    id: 20,
     images: "fb_pp10.png",
     name: "Andi Rahman",
     status: "active",
@@ -131,28 +131,28 @@ export const LinkedAccountData = [
 export default function Dashboard() {
   const RecentActivityData = [
     {
-      id: "1",
+      id: 1,
       day: "Thu",
       date: "08",
       title: "You have done a mass post on the market place",
       time: "1 mins ago",
     },
     {
-      id: "2",
+      id: 2,
       day: "Thu",
       date: "08",
       title: "You have done a mass post on the market place",
       time: "1 mins ago",
     },
     {
-      id: "3",
+      id: 3,
       day: "Thu",
       date: "08",
       title: "You have done a mass post on the market place",
       time: "1 mins ago",
     },
     {
-      id: "4",
+      id: 4,
       day: "Thu",
       date: "08",
       title: "You have done a mass post on the market place",
@@ -162,28 +162,28 @@ export default function Dashboard() {
 
   const MarketPlaceActivityData = [
     {
-      id: "1",
+      id: 1,
       image: "fb_pp1.png",
       name: "Rina Fitriani",
       title: "The car you uploaded on the marketplace is sold!",
       time: "19.30",
     },
     {
-      id: "2",
+      id: 2,
       image: "fb_pp2.png",
       name: "Rina Fitriani",
       title: "The car you uploaded on the marketplace is sold!",
       time: "19.30",
     },
     {
-      id: "3",
+      id: 3,
       image: "fb_pp3.png",
       name: "Rina Fitriani",
       title: "The car you uploaded on the marketplace is sold!",
       time: "19.30",
     },
     {
-      id: "3",
+      id: 4,
       image: "fb_pp4.png",
       name: "Rina Fitriani",
       title: "The car you uploaded on the marketplace is sold!",
@@ -194,10 +194,10 @@ export default function Dashboard() {
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex flex-wrap flex-row items-center gap-6">
-        <ChartActiveAccount/>
-        <ChartSuspendAccount/>
-        <ChartMarketPlacePost/>
-        <ChartGroupPost/>
+        <ChartActiveAccount />
+        <ChartSuspendAccount />
+        <ChartMarketPlacePost />
+        <ChartGroupPost />
       </div>
       <div className="flex flex-row mt-4 gap-4">
         <div className="w-[73%]">
