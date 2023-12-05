@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import {
@@ -10,7 +11,7 @@ import { FiChevronDown } from "react-icons/fi";
 export default function Subscription() {
   const subscriptionCardItems = [
     {
-      id: "basic",
+      id: 1,
       title: "Basic",
       desc: "Lorem ipsum dolor sit amet consectetur. Fusce nisl",
       normal_price: "190.000",
@@ -51,7 +52,7 @@ export default function Subscription() {
       ],
     },
     {
-      id: "premium",
+      id: 2,
       title: "Premium",
       desc: "Lorem ipsum dolor sit amet consectetur. Fusce nisl",
       normal_price: "190.000",
@@ -92,7 +93,7 @@ export default function Subscription() {
       ],
     },
     {
-      id: "basic",
+      id: 3,
       title: "Basic",
       desc: "Lorem ipsum dolor sit amet consectetur. Fusce nisl",
       normal_price: "190.000",
@@ -133,6 +134,10 @@ export default function Subscription() {
       ],
     },
   ];
+
+  const handleChoosePackage = (subscriptionId) => {
+    localStorage.setItem("subscription_id", subscriptionId);
+  };
   return (
     <div className="flex flex-row gap-5 2xl:gap-12">
       {subscriptionCardItems.map((item, index) => (
@@ -166,6 +171,7 @@ export default function Subscription() {
                 </div>
                 <Link href="/fb-auto-post/subscription/payment/">
                   <button
+                    onClick={() => handleChoosePackage(item.id)}
                     className={`py-3 px-8 2xl:px-10 ${item.btn_color} text-base 2xl:text-xl font-semibold text-white rounded-lg mb-2`}
                   >
                     Choose a Package
@@ -198,7 +204,7 @@ export default function Subscription() {
               >
                 See more
               </p>
-              <FiChevronDown color={item.btn_bottom_color}/>
+              <FiChevronDown color={item.btn_bottom_color} />
             </div>
           </div>
         </div>

@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import "./draftEditor.css";
 
-export default function TextEditor() {
-  const { quillRef } = useQuill({
+export default function TextEditor({ content }) {
+  const { quill, quillRef } = useQuill({
     modules: {
       toolbar: "#toolbar",
     },
     formats: ["bold", "italic", "header", "blockquote", "link", "list"],
   });
 
+  const [value, setValue] = useState("");
+  useEffect(() => {
+    if (quill) {
+      quill.on("text-change", () => {
+        // console.log(quillRef.current.firstChild.innerHTML);
+        const editorValue = quillRef.current.firstChild.innerHTML;
+        setValue(editorValue);
+        content(editorValue);
+      });
+    }
+  }, [quill, quillRef, content]);
   return (
     <div>
       <div id="toolbar">

@@ -12,51 +12,62 @@ const paymentMethodData = [
   },
   {
     id: "bca",
+    payment_type: "bank_transfer",
+    bank: "bca",
     name: "BCA Virtual Account",
     img: "bca-logo.png",
   },
   {
     id: "mandiri",
+    payment_type: "bank_transfer",
     name: "Mandiri Virtual Account",
     img: "mandiri-logo.png",
   },
   {
     id: "bni",
+    payment_type: "bank_transfer",
     name: "BNI Virtual Account",
     img: "bni-logo.png",
   },
   {
     id: "bri",
+    payment_type: "bank_transfer",
     name: "BRI Virtual Account",
     img: "bri-logo.png",
   },
   {
     id: "maybank",
+    payment_type: "bank_transfer",
     name: "Maybank Virtual Account",
     img: "maybank-logo.png",
   },
   {
     id: "permata",
+    payment_type: "bank_transfer",
     name: "Permata Bank Virtual Account",
     img: "permata-logo.png",
   },
   {
     id: "qris",
+    payment_type: "e_wallet",
     name: "QRIS",
     img: "qris-logo.png",
   },
   {
     id: "ovo",
+    payment_type: "e_wallet",
     name: "OVO",
     img: "ovo-logo.png",
   },
   {
     id: "gopay",
+    payment_type: "e_wallet",
     name: "Gopay",
     img: "gopay-logo.png",
   },
   {
     id: "dana",
+    payment_type: "e_wallet",
     name: "Dana",
     img: "dana-logo.png",
   },
@@ -146,8 +157,22 @@ const paymentDetailsData = [
 export default function Payment() {
   const [selectedPayment, setSelectedPayment] = useState();
 
-  const handlePaymentSelect = (paymentId) => {
+  const handlePaymentSelect = (paymentId, paymentName, paymentType) => {
     setSelectedPayment(paymentId);
+    localStorage.setItem("bank", paymentName);
+    localStorage.setItem("name", paymentId);
+    localStorage.setItem("payment_type", paymentType);
+  };
+
+  const handleCreatePaymentBill = () => {
+    // Use the selectedPayment value for further actions
+    if (selectedPayment) {
+      // Perform actions related to the selected payment, e.g., create a payment bill
+      console.log(`Creating payment bill for ${selectedPayment}`);
+    } else {
+      // Handle the case where no payment method is selected
+      console.error("No payment method selected");
+    }
   };
   return (
     <div className="w-full h-full flex flex-row gap-7 2xl:gap-20">
@@ -160,7 +185,9 @@ export default function Payment() {
             <div key={item.id}>
               <div
                 className="p-4 flex flex-row justify-between cursor-pointer"
-                onClick={() => handlePaymentSelect(item.id)}
+                onClick={() =>
+                  handlePaymentSelect(item.id, item.name, item.payment_type)
+                }
               >
                 <div className="flex items-center">
                   <div
@@ -257,7 +284,10 @@ export default function Payment() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <Link href="/fb-auto-post/subscription/payment/detail">
-                <button className="px-14 py-2 rounded-md bg-primary-base text-base font-medium text-white">
+                <button
+                  onClick={handleCreatePaymentBill}
+                  className="px-14 py-2 rounded-md bg-primary-base text-base font-medium text-white"
+                >
                   Create a Payment Bill
                 </button>
               </Link>

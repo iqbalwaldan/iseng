@@ -4,6 +4,8 @@ import ChartActiveAccount from "@/components/dashboard/chart/chart-active-accoun
 import ChartGroupPost from "@/components/dashboard/chart/chart-group-post";
 import ChartMarketPlacePost from "@/components/dashboard/chart/chart-marketplace-post";
 import ChartSuspendAccount from "@/components/dashboard/chart/chart-suspend-account";
+import axios from "@/lib/axios";
+import { useEffect, useState } from "react";
 
 export const LinkedAccountData = [
   {
@@ -191,6 +193,22 @@ export default function Dashboard() {
     },
   ];
 
+  const [facebookUrl, setFacebookUrl] = useState("");
+
+  const loginFacebook = async (e) => {
+    e.preventDefault();
+    const facebookUrl = await axios.get("/api/auth/facebook");
+    setFacebookUrl(facebookUrl.data);
+    // window.location.href = facebookUrl;
+  };
+
+  useEffect(() => {
+    console.log(facebookUrl.data);
+    if (facebookUrl != "") {
+      window.location.href = facebookUrl;
+    }
+  }, [facebookUrl]);
+
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex flex-wrap flex-row items-center gap-6">
@@ -299,11 +317,14 @@ export default function Dashboard() {
                 List of your connected account
               </p>
             </div>
-            <div className="cursor-pointer flex w-32 items-center justify-evenly border border-primary-base px-1 py-[5px] 2xl:px-2 2xl:py-3 rounded-lg">
+            <div
+              onClick={loginFacebook}
+              className="cursor-pointer flex w-32 items-center justify-evenly border border-primary-base px-1 py-[5px] 2xl:px-2 2xl:py-3 rounded-lg"
+            >
               <img src="/assets/icons/formkit_add.png" />
-              <p className="text-[10px] 2xl:text-sm font-semibold text-primary-base">
+              <span className="text-[10px] 2xl:text-sm font-semibold text-primary-base">
                 Add Account
-              </p>
+              </span>
             </div>
           </div>
           <div className="w-full max-h-[565px] 2xl:max-h-[677px] px-2 flex flex-col items-center mt-4 gap-4 overflow-y-scroll">

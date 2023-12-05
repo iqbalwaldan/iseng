@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/hooks/auth";
 import React, { useState } from "react";
 
 export default function Profile() {
@@ -15,6 +16,7 @@ export default function Profile() {
     setSelectedCode(code);
     setIsDropdownOpen(false);
   };
+  const { user } = useAuth({ middleware: "auth" });
 
   return (
     <div className="relative w-full h-[280.8px] bg-[url('/assets/images/profile-bg.png')] bg-cover bg-center bg-no-repeat">
@@ -29,16 +31,16 @@ export default function Profile() {
             </div>
           </div>
           <h1 className="mt-4 text-base 2xl:text-xl font-bold text-neutral-80">
-            Angelina Christie
+            {user?.first_name}&nbsp;{user?.last_name}
           </h1>
           <p className="mt-2 text-xs 2xl:text-base font-normal text-neutral-60">
             Platinum Member
           </p>
           <p className="mt-2 text-xs 2xl:text-base font-normal text-neutral-60">
-            +620 892 6371 118
+            {user?.phone_number}
           </p>
           <p className="mt-2 text-xs 2xl:text-base font-normal text-neutral-60">
-            angelina.christy@gmail.com
+            {user?.email}
           </p>
         </div>
         <div className="h-[420px] 2xl:h-[734px] w-[70%] bg-white rounded-2xl border border-neutral-30 pt-8 px-10 flex flex-col gap-6">
@@ -58,9 +60,7 @@ export default function Profile() {
             </div>
             <div className="flex flex-col w-full">
               <div className="flex mb-1">
-                <p className="font-normal text-sm text-neutral-70">
-                  Last Name
-                </p>
+                <p className="font-normal text-sm text-neutral-70">Last Name</p>
                 <p className="font-normal text-sm text-error-base">*</p>
               </div>
               <input

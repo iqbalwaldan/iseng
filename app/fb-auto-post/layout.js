@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
 import Header from "@/components/header";
-import GlobalState from "@/context";
-import "../globals.css";
-import { Inter } from "next/font/google";
 import Sidebar from "@/components/sidebar";
+import GlobalState from "@/context";
+import { useAuth } from "@/hooks/auth";
+import { Inter } from "next/font/google";
+import { useState } from "react";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,7 @@ export const metadata = {
 };
 
 export default function Layout({ children }) {
+  const { user } = useAuth({ middleware: "auth" });
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   return (
     <html lang="en">
@@ -22,7 +24,7 @@ export default function Layout({ children }) {
           <div className="flex h-screen overflow-hidden">
             <Sidebar setSelectedMenuItem={setSelectedMenuItem} />
             <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-              <Header title={selectedMenuItem} />
+              <Header title={selectedMenuItem} user={user} />
               <main>
                 <div className="p-7 md:p-6 2xl:p-10">{children}</div>
               </main>

@@ -1,10 +1,10 @@
 "use client";
 import { MessageIcon, NotificationIcon } from "@/public/assets/icons";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-export default function Header({ title }) {
+export default function Header({ title, user }) {
   const [hasNotifications, setHasNotifications] = useState(true);
   const notificationIconColor = hasNotifications
     ? "text-error-base"
@@ -40,10 +40,13 @@ export default function Header({ title }) {
             {isOpen && (
               <div className="absolute top-9 -left-5 -translate-x-1/2 bg-white border border-gray-300 shadow-lg rounded-md py-2">
                 <ul>
+                  <li className="px-4 py-2">{user?.first_name}</li>
                   <Link href="/fb-auto-post/profile">
                     <li className="px-4 py-2">Profile</li>
                   </Link>
-                  <li className="px-4 py-2">Settings</li>
+                  <Link href="/fb-auto-post/invoice">
+                    <li className="px-4 py-2">Invoice</li>
+                  </Link>
                 </ul>
               </div>
             )}

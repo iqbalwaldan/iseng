@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
-import { useContext } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { GlobalContext } from "@/context";
+import { useAuth } from "@/hooks/auth";
 import {
   AutoAddIcon,
   AutoInboxIcon,
@@ -16,7 +15,8 @@ import {
   ReminderIcon,
   SubscriptonIcon,
 } from "@/public/assets/icons";
-import { GlobalContext } from "@/context";
+import { usePathname, useRouter } from "next/navigation";
+import { useContext } from "react";
 
 const menuItems = [
   {
@@ -96,6 +96,8 @@ const menuItems = [
 
 export default function Sidebar({ setSelectedMenuItem }) {
   const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
+
+  const { logout } = useAuth();
 
   const pathName = usePathname();
   const router = useRouter();
@@ -188,7 +190,7 @@ export default function Sidebar({ setSelectedMenuItem }) {
                 {menuItems.slice(11, 12).map((menuItem) => (
                   <li key={menuItem.id}>
                     <label
-                      onClick={() => handlenavigate(menuItem)}
+                      onClick={logout}
                       className={`relative cursor-pointer flex items-center gap-4 text-sm font-normal text-error-50 duration-300 ease-in-out hover:text-primary-base
                              ${
                                pathName.includes(menuItem.id) &&

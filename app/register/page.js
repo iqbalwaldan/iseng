@@ -1,201 +1,271 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-
-const slides = [
-  {
-    url: "/assets/images/chat-image.png",
-    span: "Simplify 1",
-    text: "Social Media Strategy with Sharein 1",
-  },
-  {
-    url: "/assets/images/calendar-image.png",
-    span: "One easy",
-    text: "step to make your business more known",
-  },
-  {
-    url: "/assets/images/frame-image.png",
-    span: "Simplify 3",
-    text: "Social Media Strategy with Sharein 3",
-  },
-  {
-    url: "/assets/images/analytics-image.png",
-    span: "Simplify 4",
-    text: "Social Media Strategy with Sharein 4",
-  },
-];
+import CarouselSharein from "@/components/carouselSharein";
+import { useAuth } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Input from "@/components/input";
+import InputError from "@/components/inputError";
+import LogoSharein from "@/components/logoSharein";
+import axios from "@/lib/axios";
 
 export default function Register() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const countryCodes = ["+62", "+1", "+44", "+81"];
 
-  const goToSlide = (slideIndex) => {
-    setCurrentIndex(slideIndex);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [country_number, setCountry_number] = useState("+62");
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const nextSlide = () => {
-    const nextIndex = (currentIndex + 1) % slides.length;
-    goToSlide(nextIndex);
+  const handleCodeSelect = (code) => {
+    setCountry_number(code);
+    setIsDropdownOpen(false);
   };
 
-  const renderDots = () => {
-    return slides.map((slide, slideIndex) => (
-      <div
-        key={slideIndex}
-        onClick={() => goToSlide(slideIndex)}
-        className={`w-4 h-4 rounded-full border border-1 mx-2 cursor-pointer ${
-          slideIndex === currentIndex ? "bg-white" : ""
-        }`}
-      ></div>
-    ));
+  const { register } = useAuth({
+    middleware: "guest",
+  });
+  const router = useRouter();
+
+  const [first_name, setFirst_name] = useState("");
+  const [last_name, setLast_name] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone_number, setPhone_number] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [status, setStatus] = useState(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const fullPhoneNumber = `${country_number}${phone_number}`;
+
+    register({
+      first_name,
+      last_name,
+      email,
+      phone_number: fullPhoneNumber,
+      password,
+      password_confirmation: passwordConfirmation,
+      setErrors,
+      setStatus,
+    });
   };
 
-  const renderImages = () => {
-    return slides.map((slide, slideIndex) => (
-      <div
-        key={slideIndex}
-        className={`mx-auto ${
-          slideIndex === currentIndex ? "block" : "hidden"
-        }`}
-      >
-        <img src={slide.url} alt={`Slide ${slideIndex}`} />
-      </div>
-    ));
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  const [showPassword2, setShowPassword2] = useState(false);
+
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2);
+  };
+
+  const [googleUrl, setGoogleUrl] = useState("");
+
+  const loginGoogle = async (e) => {
+    e.preventDefault();
+    const googleUrl = await axios.get("/api/auth/google");
+    setGoogleUrl(googleUrl.data);
+    // window.location.href = googleUrl;
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 3000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [currentIndex]);
-
+    console.log(googleUrl.data);
+    if (googleUrl != "") {
+      window.location.href = googleUrl;
+    }
+  }, [googleUrl]);
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="md:w-register-left w-full mx-auto py-6 md:p-20 bg-[url('/assets/images/Register-bg.png')] bg-cover bg-center bg-no-repeat">
-        <div className="h-full bg-blue-500 bg-opacity-30 backdrop-blur-lg rounded-2xl border-[6px] border-[#5882C1] border-opacity-50">
-          <div className="flex flex-col">
-            <div className="mx-auto">{renderImages()}</div>
-            <p className="text-center font-extrabold text-5xl text-white px-14">
-              <span className="font-extrabold text-5xl text-[#F7B217]">
-                {slides[currentIndex].span}{" "}
-              </span>
-              {slides[currentIndex].text}
-            </p>
-            <div className="flex mx-auto mt-20 mb-6">{renderDots()}</div>
-          </div>
-        </div>
-      </div>
-      <div className="md:w-register-right w-full h-screen">
-        <div className="bg-white p-6 md:px-32 md:py-10">
-          <div className="w-16 h-16 bg-gradient-to-b from-primary-base to-secondary-base rounded-lg flex items-center justify-center mb-6">
-            <Image src="/assets/images/logo-white.png" width="50" height="50" />
-          </div>
-          <h1 className="font-bold text-4xl text-neutral-80 mb-4">Sign Up</h1>
-          <p className="text-base font-light text-neutral-70">
+      <CarouselSharein />
+      <div className="md:w-register-right h-screen">
+        <div className="bg-white w-full h-full md:px-16 md:py-3">
+          <LogoSharein />
+          <h1 className="font-bold text-2xl 2xl:text-4xl text-neutral-80 mb-1 2xl:mb-4">
+            Sign Up
+          </h1>
+          <p className="text-sm 2xl:text-base font-light text-neutral-70">
             Welcome back! Please enter your details
           </p>
-          <div className="md:flex flex-row md:justify-between">
-            <div className="flex flex-col mt-6">
-              <div className="flex mb-1">
-                <p className="font-normal text-base text-neutral-70">
-                  First Name
-                </p>
-                <p className="font-normal text-base text-error-base">*</p>
+          <form onSubmit={handleSubmit}>
+            <div className="w-full md:flex flex-row space-x-2 md:justify-between">
+              <div className="w-1/2 flex flex-col mt-3 2xl:mt-6">
+                <div className="flex mb-1">
+                  <p className="font-normal text-xs 2xl:text-base text-neutral-70">
+                    First Name
+                  </p>
+                  <p className="font-normal text-xs 2xl:text-base text-error-base">
+                    *
+                  </p>
+                </div>
+                <Input
+                  type="text"
+                  placeholder="your first name"
+                  value={first_name}
+                  onChange={(e) => setFirst_name(e.target.value)}
+                />
+                <InputError messages={errors.first_name} className="mt-2" />
               </div>
-              <input
-                className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
-                type="text"
-                placeholder="your first name"
-              />
-            </div>
-            <div className="flex flex-col mt-6">
-              <div className="flex mb-1">
-                <p className="font-normal text-base text-neutral-70">
-                  Last Name
-                </p>
-                <p className="font-normal text-base text-error-base">*</p>
+              <div className="w-1/2 flex flex-col mt-3 2xl:mt-6">
+                <div className="flex mb-1">
+                  <p className="font-normal text-xs 2xl:text-base text-neutral-70">
+                    Last Name
+                  </p>
+                  <p className="font-normal text-xs 2xl:text-base text-error-base">
+                    *
+                  </p>
+                </div>
+                <Input
+                  type="text"
+                  placeholder="your last name"
+                  value={last_name}
+                  onChange={(e) => setLast_name(e.target.value)}
+                />
+                <InputError messages={errors.last_name} className="mt-2" />
               </div>
-              <input
-                className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
-                type="text"
-                placeholder="your last name"
-              />
             </div>
-          </div>
 
-          <div className="flex flex-col mt-6">
-            <div className="flex mb-1">
-              <p className="font-normal text-base text-neutral-70">
-                Email
-              </p>
-              <p className="font-normal text-base text-error-base">*</p>
-            </div>
-            <input
-              className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
-              type="text"
-              placeholder="your email"
-            />
-          </div>
-          <div className="flex flex-col mt-6">
-            <div className="flex mb-1">
-              <p className="font-normal text-base text-neutral-70">Phone Number</p>
-              <p className="font-normal text-base text-error-base">*</p>
-            </div>
-            <div className="flex">
-              <input
-                className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-20 h-12 rounded-l-md text-base font-light"
+            <div className="flex flex-col mt-3 2xl:mt-6">
+              <div className="flex mb-1">
+                <p className="font-normal text-xs 2xl:text-base text-neutral-70">
+                  Email
+                </p>
+                <p className="font-normal text-xs 2xl:text-base text-error-base">
+                  *
+                </p>
+              </div>
+              <Input
                 type="text"
-                placeholder="+62"
+                placeholder="your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <input
-                className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none flex-grow h-12 rounded-r-md text-base font-light"
-                type="text"
-                placeholder="your phone number"
-              />
+              <InputError messages={errors.email} className="mt-2" />
             </div>
-          </div>
-          <div className="flex flex-col mt-6">
-            <div className="flex mb-1">
-              <p className="font-normal text-base text-neutral-70">Password</p>
-              <p className="font-normal text-base text-error-base">*</p>
+            <div className="flex flex-col mt-3 2xl:mt-6">
+              <div className="flex mb-1">
+                <p className="font-normal text-xs 2xl:text-base text-neutral-70">
+                  Phone Number
+                </p>
+                <p className="font-normal text-xs 2xl:text-base text-error-base">
+                  *
+                </p>
+              </div>
+              <div className="relative w-full flex">
+                <input
+                  className="cursor-pointer border border-r-0 border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-14 2xl:w-20 h-10 2xl:h-12 rounded-l-md text-xs 2xl:text-base font-light"
+                  type="text"
+                  placeholder="+62"
+                  value={country_number}
+                  onChange={(e) => setCountry_number(e.target.value)}
+                  onClick={toggleDropdown}
+                />
+                {isDropdownOpen && (
+                  <div className="absolute z-10 mt-2 w-[18%] top-9 text-xs 2xl:text-base text-neutral-70 bg-white border border-[#CFCFCF] shadow-lg rounded-b-md">
+                    {countryCodes.map((code) => (
+                      <div
+                        key={code}
+                        onClick={() => handleCodeSelect(code)}
+                        className="cursor-pointer p-2 hover:bg-gray-200"
+                      >
+                        {code}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <input
+                  className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none w-full flex-grow h-10 2xl:h-12 rounded-r-md text-xs 2xl:text-base font-light"
+                  type="text"
+                  placeholder="your phone number"
+                  value={phone_number}
+                  onChange={(e) => setPhone_number(e.target.value)}
+                />
+              </div>
+              <InputError messages={errors.phone_number} className="mt-2" />
             </div>
-            <input
-              className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
-              type="text"
-              placeholder="your password"
-            />
-          </div>
-          <div className="flex flex-col mt-6">
-            <div className="flex mb-1">
-              <p className="font-normal text-base text-neutral-70">
-                Password Confirmation
-              </p>
-              <p className="font-normal text-base text-error-base">*</p>
+            <div className="flex flex-col mt-3 2xl:mt-6">
+              <div className="flex mb-1">
+                <p className="font-normal text-xs 2xl:text-base text-neutral-70">
+                  Password
+                </p>
+                <p className="font-normal text-xs 2xl:text-base text-error-base">
+                  *
+                </p>
+              </div>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputError messages={errors.password} className="mt-2" />
+                <span
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-neutral-70"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </div>
-            <input
-              className="border border-[#CFCFCF] p-3 text-neutral-70 focus:outline-none h-12 rounded-md text-base font-light"
-              type="text"
-              placeholder="your password"
-            />
-          </div>
-          <button className="bg-[#2652FF] w-full h-[51px] mt-10 rounded-md py-2 px-4 text-xl font-semibold text-white">
-            Sign Up
-          </button>
-          <p className="my-6 text-center">or login with</p>
-          <div className="w-full h-[51px] flex items-center justify-center rounded-md outline outline-neutral-30 outline-1">
-            <Image src="/assets/icons/google2.png" width="20" height="20" />
-            <p className="ml-2 font-normal text-lg text-neutral-60">
+            <div className="flex flex-col mt-3 2xl:mt-6">
+              <div className="flex mb-1">
+                <p className="font-normal text-xs 2xl:text-base text-neutral-70">
+                  Password Confirmation
+                </p>
+                <p className="font-normal text-xs 2xl:text-base text-error-base">
+                  *
+                </p>
+              </div>
+              <div className="relative">
+                <Input
+                  labelInput={"Password Confirmation"}
+                  type={showPassword2 ? "text" : "password"}
+                  placeholder="your password"
+                  value={passwordConfirmation}
+                  onChange={(e) => setPasswordConfirmation(e.target.value)}
+                />
+                <InputError messages={errors.password} className="mt-2" />
+                <span
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-neutral-70"
+                  onClick={togglePasswordVisibility2}
+                >
+                  {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+            </div>
+            <button
+              className="bg-[#2652FF] w-full h-10 2xl:h-[51px] mt-5 2xl:mt-10 rounded-md py-2 px-4 text-base 2xl:text-xl font-semibold text-white"
+              type="submit"
+            >
+              Sign Up
+            </button>
+          </form>
+          <p className="my-2 2xl:my-6 2xl:text-base text-xs text-center">
+            or login with
+          </p>
+          <div className="w-full flex flex-col mt-0 2xl:mt-4">
+            <button
+              onClick={loginGoogle}
+              className="w-full my-0 2xl:my-2 rounded-md border border-[#CACBCD] p-2 text-xs 2xl:text-base text-center text-[#7D7F82] flex gap-3 item-center justify-center"
+            >
+              <Image src="/assets/icons/google2.png" width="20" height="20" />
               Continue with Google
-            </p>
+            </button>
           </div>
-          <div className="flex mb-1 mx-auto my-3 justify-center">
-            <p className="font-normal text-base text-neutral-70">
+          <div className="flex mx-auto mt-2 2xl:mt-3 justify-center">
+            <p className="font-normal text-xs 2xl:text-base text-neutral-70">
               Already have an account?&nbsp;
             </p>
             <a
-              className="font-semibold text-base text-primary-base"
-              href="/register"
+              className="font-semibold text-xs 2xl:text-base text-primary-base"
+              href="/login"
             >
               Sign in
             </a>

@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import axios from "@/lib/axios";
 
 export default function LoginMultiAccount() {
   const [showAlert, setShowAlert] = useState(false);
@@ -241,8 +242,7 @@ export default function LoginMultiAccount() {
     Swal.fire({
       icon: "success",
       title: "Successfully Added a Reminder",
-      text:
-        "You have successfully added a reminder and we will send you a reminder when the set date arrives",
+      text: "You have successfully added a reminder and we will send you a reminder when the set date arrives",
       confirmButtonText: "Okay",
       confirmButtonColor: "#2652FF",
     });
@@ -252,8 +252,7 @@ export default function LoginMultiAccount() {
     Swal.fire({
       icon: "error",
       title: "Failed to Add Reminder",
-      text:
-        "Sorry, the reminder failed to add because the date you entered has passed.",
+      text: "Sorry, the reminder failed to add because the date you entered has passed.",
       confirmButtonText: "Try Again",
       confirmButtonColor: "#2652FF",
     });
@@ -275,6 +274,22 @@ export default function LoginMultiAccount() {
     pageNumbers.push(i);
   }
 
+  const [facebookUrl, setFacebookUrl] = useState("");
+
+  const loginFacebook = async (e) => {
+    e.preventDefault();
+    const facebookUrl = await axios.get("/api/auth/facebook");
+    setFacebookUrl(facebookUrl.data);
+    // window.location.href = facebookUrl;
+  };
+
+  useEffect(() => {
+    console.log(facebookUrl.data);
+    if (facebookUrl != "") {
+      window.location.href = facebookUrl;
+    }
+  }, [facebookUrl]);
+
   return (
     <div className="flex w-full md:flex-row">
       <div className="flex flex-col w-[69%]">
@@ -283,7 +298,7 @@ export default function LoginMultiAccount() {
           <div className="w-full">
             <button
               className="w-[135px] h-[35px] mt-2 ml-4 rounded-md border border-1 bg-[#2652FF] p-2 text-xs text-white flex item-center justify-center"
-              onClick={Alert}
+              onClick={loginFacebook}
             >
               <Image
                 src="/assets/icons/plus.png"
@@ -369,7 +384,8 @@ export default function LoginMultiAccount() {
           </table>
           <div className="flex justify-between items-center mt-3 ml-7 text-gray-500 dark:text-gray-400 text-[14px]">
             <div>
-              Showing data {currentEntriesStart} to {currentEntriesEnd} of {data.length} entries
+              Showing data {currentEntriesStart} to {currentEntriesEnd} of{" "}
+              {data.length} entries
             </div>
             <div className="flex space-x-4">
               <button
@@ -382,11 +398,14 @@ export default function LoginMultiAccount() {
               {pageNumbers.map((pageNumber) => (
                 <button
                   key={pageNumber}
-                  className={`bg-[#F5F5F5] text-black p-2 rounded-md ${pageNumber === currentPage ? 'font-bold' : ''}`}
+                  className={`bg-[#F5F5F5] text-black p-2 rounded-md ${
+                    pageNumber === currentPage ? "font-bold" : ""
+                  }`}
                   onClick={() => handlePageChange(pageNumber)}
                   style={{
-                    borderColor: pageNumber === currentPage ? 'blue' : '#F5F5F5',
-                    cursor: 'pointer',
+                    borderColor:
+                      pageNumber === currentPage ? "blue" : "#F5F5F5",
+                    cursor: "pointer",
                   }}
                 >
                   {pageNumber}
@@ -397,8 +416,14 @@ export default function LoginMultiAccount() {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage * itemsPerPage >= data.length}
                 style={{
-                  borderColor: currentPage * itemsPerPage >= data.length ? '#F5F5F5' : 'blue',
-                  cursor: currentPage * itemsPerPage >= data.length ? 'not-allowed' : 'pointer',
+                  borderColor:
+                    currentPage * itemsPerPage >= data.length
+                      ? "#F5F5F5"
+                      : "blue",
+                  cursor:
+                    currentPage * itemsPerPage >= data.length
+                      ? "not-allowed"
+                      : "pointer",
                 }}
               >
                 Next

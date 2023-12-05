@@ -3,7 +3,7 @@ import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import "./draftEditor.css";
 
-export default function TextEditor2({value, onChange}) {
+export default function TextEditor2({ value, onChange }) {
   const { quillRef } = useQuill({
     modules: {
       toolbar: "#toolbar2",
@@ -23,7 +23,7 @@ export default function TextEditor2({value, onChange}) {
         <button className="ql-list" value="bullet"></button>
         <button className="ql-list" value="ordered"></button>
       </div>
-      <div ref={quillRef} id="editor2" value={value} onChange={onChange}/>
+      <div ref={quillRef} id="editor2" value={value} onChange={onChange} />
     </div>
   );
 }

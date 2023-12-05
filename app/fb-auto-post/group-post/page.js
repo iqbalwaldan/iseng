@@ -1,13 +1,17 @@
 "use client";
 import ChooseAccount from "@/components/dashboard/choose-account";
 import ChooseGroup from "@/components/dashboard/choose-group";
-import ScheduleCalendar from "@/components/dashboard/schedule/scheduleCalendar";
-import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
+import GenerateCaption from "@/components/dashboard/generate-caption/generate-caption";
+import SelectCaption from "@/components/dashboard/generate-caption/select-caption";
+import DatePickerEnd from "@/components/dashboard/schedule/datePickerEnd";
+import DatePickerStart from "@/components/dashboard/schedule/datePickerStart";
+import TimeEnd from "@/components/dashboard/schedule/timeEnd";
+import TimeStart from "@/components/dashboard/schedule/timeStart";
 import TextEditor from "@/components/dashboard/text-editor/editor";
-import TextEditor2 from "@/components/dashboard/text-editor/editor2";
-import SampleText from "@/components/dashboard/text-editor/sampletext";
-import ImageUpload from "@/components/fb-image_upload/imageUpload";
 import ProcessedImage from "@/components/fb-image_upload/processedImage";
+import InputError from "@/components/inputError";
+import { useGroupPost } from "@/hooks/groupPost";
+import axios from "@/lib/axios";
 import {
   Modal,
   ModalBody,
@@ -17,7 +21,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React, { useState } from "react";
-import { FaCheck } from "react-icons/fa";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Swal from "sweetalert2";
 
 const hashTagData = [
@@ -68,16 +72,28 @@ const hashTagData = [
 ];
 
 export default function GroupPost() {
+  const [loading, setLoading] = useState(false);
   const [processedImage, setProcessedImage] = useState(null);
   const [imageUploaded, setImageUploaded] = useState(false);
 
-  const handleImageUpload = (imageUrl) => {
+  const [image, setImage] = useState("");
+
+  const generateRandomColor = () => {
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  };
+
+  const [regenerateBackgroundColor, setRegenerateBackgroundColor] = useState(
+    generateRandomColor()
+  );
+
+  const handleRegenerateColor = () => {
+    setRegenerateBackgroundColor(generateRandomColor());
+    console.log(regenerateBackgroundColor);
+  };
+
+  const borderedImage = (imageUrl) => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-
-    // Define the background color
-    const backgroundColor =
-      "#" + Math.floor(Math.random() * 16777215).toString(16); // Change this to your desired color
 
     // Create a new Image object for the uploaded image
     const uploadedImage = new Image();
@@ -93,7 +109,7 @@ export default function GroupPost() {
       const y = (canvas.height - uploadedImage.height) / 2;
 
       // Fill the canvas with the background color
-      ctx.fillStyle = backgroundColor;
+      ctx.fillStyle = regenerateBackgroundColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw the uploaded image centered on top of the background
@@ -102,16 +118,28 @@ export default function GroupPost() {
       // Convert the canvas to a data URL (base64 encoded image)
       const processedImageUrl = canvas.toDataURL("image/png");
 
-      // Set processed image URL using setProcessedImage function
       setProcessedImage(processedImageUrl);
       setImageUploaded(true);
     };
   };
 
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      borderedImage(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+    setImage(file);
+  };
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [contentModal, setContentModal] = React.useState("");
 
-  const contents = ["schedule", "caption"];
+  const contents = ["start", "end", "caption"];
 
   const handleOpenModal = (contentModal) => {
     setContentModal(contentModal);
@@ -139,12 +167,6 @@ export default function GroupPost() {
     }
   };
 
-  const categorySelect = ["Cat1", "Cat2", "Cat3", "Cat4", "Cat5"];
-  const [selectCategory, setSelectCategory] = useState("Select category");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
   const handleCalendarSelect = (selectedCategory) => {
     setSelectCategory(selectedCategory);
     setIsDropdownOpen(false);
@@ -153,64 +175,185 @@ export default function GroupPost() {
   const [success, setSuccess] = useState(true);
 
   const handleSaveButtonClick = () => {
+    // Swal.fire({
+    //   imageUrl: "/assets/icons/alert-circle-warning.png",
+    //   imageHeight: 70,
+    //   imageWidth: 70,
+    //   title: "Successfully Sending Inbox to Friendlist",
+    //   text: "You have successfully sent an inbox to your friendlist",
+    //   showCancelButton: true,
+    //   cancelButtonText: "cancel",
+    //   confirmButtonText: "save",
+    //   buttonsStyling: false,
+    //   reverseButtons: true,
+    //   customClass: {
+    //     title: "sweet_titleImportant",
+    //     htmlContainer: "sweet_textImportant",
+    //     cancelButton: "alert-btn-cancel",
+    //     confirmButton: "alert-btn-dialog",
+    //   },
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     if (success) {
+    //       Swal.fire({
+    //         imageUrl: "/assets/icons/alert-circle-success.png",
+    //         imageHeight: 70,
+    //         imageWidth: 70,
+    //         title: "Successfully Sending Inbox to Friendlist",
+    //         text: "You have successfully sent an inbox to your friendlist",
+    //         confirmButtonText: "Okey",
+    //         buttonsStyling: false,
+    //         customClass: {
+    //           title: "sweet_titleImportant",
+    //           htmlContainer: "sweet_textImportant",
+    //           confirmButton: "alert-btn",
+    //         },
+    //       });
+    //     } else {
+    //       Swal.fire({
+    //         imageUrl: "/assets/icons/alert-circle-danger.png",
+    //         imageHeight: 70,
+    //         imageWidth: 70,
+    //         title: "Failed Sending Inbox to Friendlist",
+    //         text: "Sorry, the inbox sending process failed due to a problem. Please try again later",
+    //         confirmButtonText: "Try Again",
+    //         buttonsStyling: false,
+    //         customClass: {
+    //           title: "sweet_titleImportant",
+    //           htmlContainer: "sweet_textImportant",
+    //           confirmButton: "alert-btn",
+    //         },
+    //       });
+    //     }
+    //   } else if (result.isDenied) {
+    //     onclose();
+    //   }
+    // });
+  };
+
+  const { setGroupPost } = useGroupPost();
+
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [caption, setCaption] = useState("");
+  const [hashtag, setHashtag] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [status, setStatus] = useState(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    setGroupPost({
+      title,
+      price,
+      caption,
+      hashtag,
+      image,
+    });
+    showCustomErrorAlert();
+  };
+
+  const showCustomErrorAlert = () => {
     Swal.fire({
-      imageUrl: "/assets/icons/alert-circle-warning.png",
+      imageUrl: "/assets/icons/alert-circle-success.png",
       imageHeight: 70,
       imageWidth: 70,
-      title: "Successfully Sending Inbox to Friendlist",
+      title: "Successfully Set Newsletter",
       text: "You have successfully sent an inbox to your friendlist",
-      showCancelButton: true,
-      cancelButtonText: "cancel",
-      confirmButtonText: "save",
+      confirmButtonText: "Okey",
       buttonsStyling: false,
-      reverseButtons: true,
       customClass: {
         title: "sweet_titleImportant",
         htmlContainer: "sweet_textImportant",
-        cancelButton: "alert-btn-cancel",
-        confirmButton: "alert-btn-dialog",
+        confirmButton: "alert-btn",
       },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (success) {
-          Swal.fire({
-            imageUrl: "/assets/icons/alert-circle-success.png",
-            imageHeight: 70,
-            imageWidth: 70,
-            title: "Successfully Sending Inbox to Friendlist",
-            text: "You have successfully sent an inbox to your friendlist",
-            confirmButtonText: "Okey",
-            buttonsStyling: false,
-            customClass: {
-              title: "sweet_titleImportant",
-              htmlContainer: "sweet_textImportant",
-              confirmButton: "alert-btn",
-            },
-          });
-        } else {
-          Swal.fire({
-            imageUrl: "/assets/icons/alert-circle-danger.png",
-            imageHeight: 70,
-            imageWidth: 70,
-            title: "Failed Sending Inbox to Friendlist",
-            text: "Sorry, the inbox sending process failed due to a problem. Please try again later",
-            confirmButtonText: "Try Again",
-            buttonsStyling: false,
-            customClass: {
-              title: "sweet_titleImportant",
-              htmlContainer: "sweet_textImportant",
-              confirmButton: "alert-btn",
-            },
-          });
-        }
-      } else if (result.isDenied) {
-        onclose();
-      }
     });
+  };
+
+  const handleTextChange = (editorValue) => {
+    setCaption(editorValue);
+  };
+
+  // handle generate data
+
+  const [contentAPI, setContentAPI] = useState("");
+
+  const handleContentAPIChange = (content) => {
+    setContentAPI(content);
+  };
+
+  const [dataGenerateCaption, setDataGenerateCaption] = useState({
+    name: "",
+    category: "",
+    description: "",
+  });
+
+  const handleChangeGenerateCaption = (event) => {
+    const { name, value } = event.target;
+    setDataGenerateCaption({
+      ...dataGenerateCaption,
+      [name]: value,
+    });
+  };
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  const formCaptionElements = [
+    <GenerateCaption
+      dataGenerateCaption={dataGenerateCaption}
+      handleChangeGenerateCaption={handleChangeGenerateCaption}
+      handleContentAPIChange={handleContentAPIChange}
+    />,
+    <SelectCaption
+      dataSelectCaption={dataGenerateCaption}
+      handleChangeSelectCaption={handleChangeGenerateCaption}
+      contentAPI={contentAPI}
+    />,
+  ];
+
+  const generateCaption = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/open-ai/generate-caption", {
+        params: { title: dataGenerateCaption.title },
+      });
+
+      // Handle the API response
+
+      const content = response.data.data.choices[0].message.content;
+      setContentAPI(content);
+      props.handleContentAPIChange(content);
+      console.log(response.data.choice);
+      // Update your state or perform other actions based on the response
+    } catch (error) {
+      // Handle errors
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // handle time data
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [startTime, setStartTime] = useState();
+  const [startMinute, setStartMinute] = useState();
+
+  const handleStartData = ({ time, minute }) => {
+    setStartTime(time);
+    setStartMinute(minute);
+  };
+  const [endTime, setEndTime] = useState();
+  const [endMinute, setEndMinute] = useState();
+
+  const handleEndData = ({ time, minute }) => {
+    setEndTime(time);
+    setEndMinute(minute);
   };
 
   return (
     <div className="w-full h-full flex">
+      <form></form>
       <div className="w-[24.5%] h-full">
         <ChooseAccount />
         <div className="mb-6"></div>
@@ -231,6 +374,8 @@ export default function GroupPost() {
                   className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                   type="text"
                   placeholder="Your title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
               <div className="flex flex-col w-full mb-2">
@@ -242,6 +387,8 @@ export default function GroupPost() {
                   className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                   type="text"
                   placeholder="Your price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
               <div className="flex flex-col w-full mb-2">
@@ -252,7 +399,11 @@ export default function GroupPost() {
                   <p className="font-normal text-base text-error-base">*</p>
                 </div>
               </div>
-              <TextEditor />
+              <TextEditor
+                content={handleTextChange}
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+              />
               <p className="flex justify-end text-xs font-normal text-neutral-70 mb-2">
                 don&#39;t have a caption yet?&nbsp;
                 <button onClick={() => handleOpenModal("caption")}>
@@ -292,7 +443,7 @@ export default function GroupPost() {
           </div>
           <div className="w-4 2xl:w-[22px]"></div>
           <div className="w-1/2 p-4 border border-neutral-20 rounded-lg 2xl:h-[832px] h-[550px] flex flex-col justify-between">
-            <div>
+            <div className="flex flex-col items-center justify-center">
               <div className="flex flex-col w-full border border-neutral-20 rounded-lg">
                 <div className="2xl:h-[602px] 2xl:w-[483px] w-full h-[400px] bg-white flex items-center justify-center">
                   {imageUploaded ? (
@@ -306,12 +457,28 @@ export default function GroupPost() {
                   )}
                 </div>
               </div>
-              <div className="mt-7">
-                <ImageUpload onUpload={handleImageUpload} />
+              <div className="flex items-center mt-7">
+                <label
+                  for="Images"
+                  class="bg-white border border-neutral-50 px-3 py-[0.32rem] rounded-l text-base font-normal text-[#A6A6A6]"
+                >
+                  Image
+                </label>
+                <input
+                  type="file"
+                  label="images"
+                  id="files"
+                  className="cursor-pointer w-full border border-y-neutral-50 border-l-0 border-r-neutral-50 rounded-r text-base font-normal text-[#A6A6A6] file:hidden bg-white px-3 py-[0.32rem] focus:text-neutral-70"
+                  onChange={handleImageUpload}
+                />
+                <InputError messages={errors.image} className="mt-2" />
               </div>
             </div>
             <div className="w-full flex justify-end">
-              <button className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md">
+              <button
+                onClick={handleRegenerateColor}
+                className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md"
+              >
                 Regenerate
               </button>
             </div>
@@ -325,14 +492,14 @@ export default function GroupPost() {
             <div className="flex items-center justify-evenly">
               <button
                 className="flex items-center justify-center cursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
-                onClick={() => handleOpenModal("schedule")}
+                onClick={() => handleOpenModal("start")}
               >
                 start
               </button>
               <div className="border-[3px] border-neutral-30 w-[29px] mx-2"></div>
               <button
                 className="flex items-center justify-center cursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
-                onClick={() => handleOpenModal("schedule")}
+                onClick={() => handleOpenModal("end")}
               >
                 end
               </button>
@@ -346,20 +513,95 @@ export default function GroupPost() {
                   {(onClose) => (
                     <>
                       <ModalHeader>
-                        {contentModal === "schedule"
+                        {contentModal === "start"
+                          ? "Determine the schedule date and time"
+                          : contentModal === "end"
                           ? "Determine the schedule date and time"
                           : "Generate captions for marketplace"}
                       </ModalHeader>
                       <ModalBody>
-                        {contentModal === "schedule" ? (
+                        {contentModal === "start" ? (
                           <div className="flex justify-between">
                             <div className="w-1/2">
-                              <div className="p-4 border border-primary-20 rounded-lg">
-                                <ScheduleCalendar />
+                              <div className="p-2 border border-primary-20 rounded-lg flex items-center justify-center">
+                                <DatePickerStart
+                                  startDate={startDate}
+                                  setStartDate={setStartDate}
+                                  endDate={endDate}
+                                />
                               </div>
                             </div>
                             <div className="w-1/3">
-                              <ScheduleTime />
+                              {/* <ScheduleTime /> */}
+                              <TimeStart
+                                startTime={startTime}
+                                startMinute={startMinute}
+                                setStartData={handleStartData}
+                              />
+                              <div className="flex flex-col w-full mb-2">
+                                <div className="flex mb-1">
+                                  <p className="font-normal text-base text-neutral-70">
+                                    Title Schedule
+                                  </p>
+                                  <p className="font-normal text-base text-error-base">
+                                    *
+                                  </p>
+                                </div>
+                                <input
+                                  className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
+                                  type="text"
+                                  placeholder="Your title schedule"
+                                />
+                              </div>
+                              <div className="w-full flex justify-start items-center">
+                                <div className="flex mr-4">
+                                  <input
+                                    type="radio"
+                                    id="radio1"
+                                    name="radios"
+                                    onChange={handleRadio1Change}
+                                    checked={radio1Selected}
+                                  />
+                                  <label htmlFor="radio1">
+                                    <span className="ml-2 text-[12px] font-normal text-neutral-70">
+                                      Today only
+                                    </span>
+                                  </label>
+                                </div>
+                                <div className="flex">
+                                  <input
+                                    type="radio"
+                                    id="radio2"
+                                    name="radios"
+                                    onChange={handleRadio2Change}
+                                    checked={radio2Selected}
+                                  />
+                                  <label htmlFor="radio2">
+                                    <span className="ml-2 text-[12px] font-normal text-neutral-70">
+                                      Repeat on the same date
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : contentModal === "end" ? (
+                          <div className="flex justify-between">
+                            <div className="w-1/2">
+                              <div className="p-2 border border-primary-20 rounded-lg flex items-center justify-center">
+                                <DatePickerEnd
+                                  startDate={startDate}
+                                  endDate={endDate}
+                                  setEndDate={setEndDate}
+                                />
+                              </div>
+                            </div>
+                            <div className="w-1/3">
+                              <TimeEnd
+                                endTime={endTime}
+                                endMinute={endMinute}
+                                setEndData={handleEndData}
+                              />
                               <div className="flex flex-col w-full mb-2">
                                 <div className="flex mb-1">
                                   <p className="font-normal text-base text-neutral-70">
@@ -408,181 +650,45 @@ export default function GroupPost() {
                             </div>
                           </div>
                         ) : (
-                          <div className="flex justify-between">
-                            <div className="w-[40%]">
-                              <div className="flex flex-col w-full mb-2">
-                                <div className="flex mb-1">
-                                  <p className="font-normal text-base text-neutral-70">
-                                    Product Name
-                                  </p>
-                                  <p className="font-normal text-base text-error-base">
-                                    *
-                                  </p>
-                                </div>
-                                <input
-                                  className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
-                                  type="text"
-                                  placeholder="Your title"
-                                />
-                              </div>
-                              <div className="flex flex-col w-full mb-2">
-                                <div className="flex mb-1">
-                                  <p className="font-normal text-base text-neutral-70">
-                                    Category
-                                  </p>
-                                  <p className="font-normal text-base text-error-base">
-                                    *
-                                  </p>
-                                </div>
-                                <div
-                                  onClick={toggleDropdown}
-                                  className="relative cursor-pointer flex items-center border border-[#CFCFCF] p-3 text-neutral-70 h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
-                                >
-                                  <p
-                                    className={`${
-                                      selectCategory === "Select category"
-                                        ? "text-neutral-30"
-                                        : "text-neutral-90"
-                                    }`}
-                                  >
-                                    {selectCategory}
-                                  </p>
-
-                                  {isDropdownOpen && (
-                                    <div className="w-full absolute z-[12] mt-2 top-9 right-0 bg-white border border-[#CFCFCF] shadow-lg rounded-md">
-                                      {categorySelect.map((category) => (
-                                        <div
-                                          key={category}
-                                          onClick={() =>
-                                            handleCalendarSelect(category)
-                                          }
-                                          className="w-full cursor-pointer text-sm font-normal text-neutral-90 p-2 flex items-center justify-between hover:bg-slate-300"
-                                        >
-                                          {category}
-                                          {category === selectCategory && (
-                                            <FaCheck color="green" />
-                                          )}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex flex-col w-full mb-2">
-                                <div className="flex mb-1">
-                                  <p className="font-normal text-base text-neutral-70">
-                                    Caption
-                                  </p>
-                                  <p className="font-normal text-base text-error-base">
-                                    *
-                                  </p>
-                                </div>
-                                <TextEditor2 />
-                              </div>
+                          <div className="px-[10%]">
+                            <div className="mb-4">
+                              {formCaptionElements[activeTab]}
                             </div>
-                            <div className="w-[55%]">
-                              <h1 className="text-base 2xl:text-xl font-semibold text-neutral-90 mb-2 2xl:mb-4">
-                                Our Recommendations
-                              </h1>
-                              <div className="grid grid-cols-2 grid-rows-3 gap-4">
-                                <div className="w-full">
-                                  <div className="w-full h-[100px] 2xl:h-[150px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-                                    <SampleText />
-                                  </div>
-                                  <div className="flex items-center justify-end cursor-pointer mt-2">
-                                    <img
-                                      src="/assets/icons/copy.png"
-                                      width={14}
-                                      height={14}
-                                    />
-                                    <p className="ml-2 text-[11px] font-semibold text-primary-base">
-                                      Copy
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full">
-                                  <div className="w-full h-[100px] 2xl:h-[150px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-                                    <SampleText />
-                                  </div>
-                                  <div className="flex items-center justify-end cursor-pointer mt-2">
-                                    <img
-                                      src="/assets/icons/copy.png"
-                                      width={14}
-                                      height={14}
-                                    />
-                                    <p className="ml-2 text-[11px] font-semibold text-primary-base">
-                                      Copy
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full">
-                                  <div className="w-full h-[100px] 2xl:h-[150px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-                                    <SampleText />
-                                  </div>
-                                  <div className="flex items-center justify-end cursor-pointer mt-2">
-                                    <img
-                                      src="/assets/icons/copy.png"
-                                      width={14}
-                                      height={14}
-                                    />
-                                    <p className="ml-2 text-[11px] font-semibold text-primary-base">
-                                      Copy
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full">
-                                  <div className="w-full h-[100px] 2xl:h-[150px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-                                    <SampleText />
-                                  </div>
-                                  <div className="flex items-center justify-end cursor-pointer mt-2">
-                                    <img
-                                      src="/assets/icons/copy.png"
-                                      width={14}
-                                      height={14}
-                                    />
-                                    <p className="ml-2 text-[11px] font-semibold text-primary-base">
-                                      Copy
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full">
-                                  <div className="w-full h-[100px] 2xl:h-[150px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-                                    <SampleText />
-                                  </div>
-                                  <div className="flex items-center justify-end cursor-pointer mt-2">
-                                    <img
-                                      src="/assets/icons/copy.png"
-                                      width={14}
-                                      height={14}
-                                    />
-                                    <p className="ml-2 text-[11px] font-semibold text-primary-base">
-                                      Copy
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full">
-                                  <div className="w-full   h-[100px] 2xl:h-[150px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-                                    <SampleText />
-                                  </div>
-                                  <div className="flex items-center justify-end cursor-pointer mt-2">
-                                    <img
-                                      src="/assets/icons/copy.png"
-                                      width={14}
-                                      height={14}
-                                    />
-                                    <p className="ml-2 text-[11px] font-semibold text-primary-base">
-                                      Copy
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="w-full flex justify-end">
-                                <div className="cursor-pointer 2xl:w-8 2xl:h-8 w-6 h-6 mt-2 2xl:mt-4 rounded-full flex justify-center items-center bg-primary-base">
-                                  <div className="w-1/2 h-1/2">
-                                    <img src="/assets/icons/reload.png" />
-                                  </div>
-                                </div>
-                              </div>
+                            <div className="flex flex-wrap gap-x-6 mx-auto">
+                              <button
+                                disabled={activeTab === 0 ? "disabled" : ""}
+                                onClick={() => setActiveTab((prev) => prev - 1)}
+                                className={`px-4 py-2 rounded-md text-base font-medium bg-primary-base text-white ${
+                                  activeTab === 0
+                                    ? "opacity-50 bg-neutral-70"
+                                    : "opacity-100"
+                                }`}
+                              >
+                                <MdNavigateBefore />
+                              </button>
+                              <button
+                                disabled={
+                                  activeTab === formCaptionElements.length - 1
+                                    ? "disabled"
+                                    : ""
+                                }
+                                onClick={() => setActiveTab((prev) => prev + 1)}
+                                className={`px-4 py-2 rounded-md text-base font-medium bg-primary-base text-white ${
+                                  activeTab === formCaptionElements.length - 1
+                                    ? "opacity-50 bg-neutral-70"
+                                    : "opacity-100"
+                                }`}
+                              >
+                                <MdNavigateNext onClick={generateCaption} />
+                              </button>
+                              {activeTab === formCaptionElements.length - 1 ? (
+                                <button
+                                  className="px-4 py-2 rounded-md text-base font-medium bg-primary-base text-white"
+                                  onClick={() => console.log(data)}
+                                >
+                                  Submit
+                                </button>
+                              ) : null}
                             </div>
                           </div>
                         )}
@@ -598,7 +704,7 @@ export default function GroupPost() {
                             </button>
                             <button
                               className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
-                              onClick={handleSaveButtonClick}
+                              onClick={handleSaveStartSchedule}
                             >
                               Save
                             </button>
@@ -630,6 +736,14 @@ export default function GroupPost() {
               <p className="ml-2 text-base font-normal text-neutral-70">
                 Save settings
               </p>
+            </div>
+            <div>
+              <p>Selected Start Date: {startDate.toDateString()}</p>
+              <p>Selected End Date: {endDate.toDateString()}</p>
+              <p>Start Time: {startTime}</p>
+              <p>Start Minute: {startMinute}</p>
+              <p>End Time: {endTime}</p>
+              <p>End Minute: {endMinute}</p>
             </div>
           </div>
           <div className="flex items-end">
