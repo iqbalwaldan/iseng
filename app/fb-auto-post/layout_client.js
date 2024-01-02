@@ -7,6 +7,7 @@ import React, { useState } from "react";
 export default function LayoutClient({ children }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   const { user } = useAuth({ middleware: "auth" });
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar setSelectedMenuItem={setSelectedMenuItem} />

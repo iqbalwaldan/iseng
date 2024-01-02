@@ -111,7 +111,7 @@ export default function TimeEnd({ endTime, endMinute, setEndData }) {
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="border border-[#CFCFCF] text-primary-50 p-4 rounded-md text-3xl 2xl:text-6xl font-bold">
               <div className="w-[50px] h-[60px] 2xl:w-[71px] 2xl:h-[84px] flex items-center justify-center">
-                {formatValue(endTime)}
+                {formatValue(time)}
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function TimeEnd({ endTime, endMinute, setEndData }) {
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="border border-[#CFCFCF] text-primary-50 p-4 rounded-md text-3xl 2xl:text-6xl font-bold cursor-default">
               <div className="w-[50px] h-[60px] 2xl:w-[71px] 2xl:h-[84px] flex items-center justify-center">
-                {formatValue(endMinute)}
+                {formatValue(minute)}
               </div>
             </div>
           </div>

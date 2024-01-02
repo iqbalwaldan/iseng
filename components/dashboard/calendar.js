@@ -1,4 +1,5 @@
-import { LinkedAccountData } from "@/app/fb-auto-post/page";
+import { useAuth } from "@/hooks/auth";
+import axios from "@/lib/axios";
 import { Tooltip } from "@nextui-org/react";
 import {
   addDays,
@@ -10,9 +11,32 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Calendar() {
+  const { user } = useAuth({ middleware: "auth" });
+
+  const [facebookAccounts, setFacebookAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchFacebookData = async () => {
+      try {
+        const response = await axios.get("/api/list-accounts", {
+          params: {
+            user_id: user.id,
+          },
+        });
+        setFacebookAccounts(response.data.accounts);
+        console.log(user?.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Panggil fungsi fetch data saat komponen dipasang
+    fetchFacebookData();
+  }, [user?.id]);
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const calendarFormat = ["Month", "Week"];
   const [viewMode, setViewMode] = useState("Month");
@@ -139,7 +163,9 @@ function Calendar() {
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-x-3 2xl:gap-x-[39px] gap-y-3 2xl:gap-y-[22px]">{days}</div>
+          <div className="grid grid-cols-7 gap-x-3 2xl:gap-x-[39px] gap-y-3 2xl:gap-y-[22px]">
+            {days}
+          </div>
         </>
       );
     } else if (viewMode === "Week") {
@@ -165,9 +191,12 @@ function Calendar() {
                   {format(day, "d")}
                 </div>
                 <div>
-                  <div className="bg-white text-[7px] 2xl:text-[8px] font-semibold text-primary-base py-[2px] w-16 2xl:w-[72px] px-[5px] rounded-sm mb-2">Group Post : 90</div>
-                  <div className="bg-white text-[7px] 2xl:text-[8px] font-semibold text-primary-base py-[2px] w-16 2xl:w-[97px] px-[5px] rounded-sm">Marketplace Post : 90</div>
-                  
+                  <div className="bg-white text-[7px] 2xl:text-[8px] font-semibold text-primary-base py-[2px] w-16 2xl:w-[72px] px-[5px] rounded-sm mb-2">
+                    Group Post : 90
+                  </div>
+                  <div className="bg-white text-[7px] 2xl:text-[8px] font-semibold text-primary-base py-[2px] w-16 2xl:w-[97px] px-[5px] rounded-sm">
+                    Marketplace Post : 90
+                  </div>
                 </div>
               </div>
             ))}
@@ -183,13 +212,12 @@ function Calendar() {
         <div className="flex items-center">
           <div className="rounded-full w-11 h-11 2xl:w-14 2xl:h-14 overflow-hidden">
             <img
-              src={`/assets/images/${
+              src={
                 selectedAccount
-                  ? LinkedAccountData.find(
-                      (item) => item.id === selectedAccount
-                    ).images
-                  : LinkedAccountData[0].images
-              }`}
+                  ? facebookAccounts.find((item) => item.id === selectedAccount)
+                      ?.avatar_url
+                  : facebookAccounts[0]?.avatar_url
+              }
               className="w-full h-full object-cover"
             />
           </div>
@@ -200,10 +228,9 @@ function Calendar() {
             >
               <p className="mr-4 text-base 2xl:text-xl font-semibold text-neutral-100">
                 {selectedAccount
-                  ? LinkedAccountData.find(
-                      (item) => item.id === selectedAccount
-                    ).name
-                  : LinkedAccountData[0].name}
+                  ? facebookAccounts.find((item) => item.id === selectedAccount)
+                      ?.name
+                  : facebookAccounts[0]?.name}
               </p>
               <p className="text-xl font-semibold text-neutral-100">{"v"}</p>
               {isDropdownAccountOpen && (
@@ -245,7 +272,7 @@ function Calendar() {
                   placeholder="Search"
                 />
                 <div className="flex flex-col gap-1 2xl:gap-4 overflow-y-auto max-h-[220px] 2xl:max-h-[415px]">
-                  {LinkedAccountData.map((item) => (
+                  {facebookAccounts.map((item) => (
                     <div key={item.id}>
                       <div
                         className="p-4 flex flex-row justify-between items-center cursor-pointer hover:bg-neutral-10"
@@ -255,7 +282,7 @@ function Calendar() {
                       >
                         <div className="flex items-center">
                           <div className="flex w-7 h-7 2xl:w-[33px] 2xl:h-[33px] items-center mr-2 2xl:mr-4">
-                            <img src={`/assets/images/${item.images}`} />
+                            <img src={item.avatar_url} />
                           </div>
                           <div className="flex items-center">
                             <p className="text-xs 2xl:text-base font-semibold text-neutral-80">
@@ -283,11 +310,15 @@ function Calendar() {
         </div>
         <div className="flex items-center">
           <div className="flex items-center">
-            <button onClick={() => changeCalendarPage(-1)}><img src="/assets/icons/left_arrow.png"/></button>
+            <button onClick={() => changeCalendarPage(-1)}>
+              <img src="/assets/icons/left_arrow.png" />
+            </button>
             <h2 className="text-base 2xl:text-xl text-neutral-100 font-semibold cursor-default mx-[10px]">
               {format(currentDate, "MMMM yyyy")}
             </h2>
-            <button onClick={() => changeCalendarPage(1)}><img src="/assets/icons/right_arrow.png"/></button>
+            <button onClick={() => changeCalendarPage(1)}>
+              <img src="/assets/icons/right_arrow.png" />
+            </button>
           </div>
           <div>
             <button
@@ -295,11 +326,10 @@ function Calendar() {
               onClick={toggleDropdown}
             >
               <div className="flex items-center text-sm 2xl:text-base font-semibold text-primary-base">
-              {viewMode}
-              <div className="ml-[6px]">
-                <img src="/assets/icons/down_arrow.png"/>
-              </div>
-
+                {viewMode}
+                <div className="ml-[6px]">
+                  <img src="/assets/icons/down_arrow.png" />
+                </div>
               </div>
               {isDropdownOpen && (
                 <div className="absolute z-[12] mt-2 w-24 top-9 right-0 bg-white border border-[#CFCFCF] shadow-lg rounded-md">

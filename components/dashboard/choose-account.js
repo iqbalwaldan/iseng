@@ -1,15 +1,45 @@
-import React, { useState } from "react";
-import { LinkedAccountData } from "@/app/fb-auto-post/page";
+"use client";
+import { useAuth } from "@/hooks/auth";
+import axios from "@/lib/axios";
+import React, { useEffect, useState } from "react";
 
-export default function ChooseAccount() {
+export default function ChooseAccount({ onSelectAccount, onSelectAccountId }) {
+  const { user } = useAuth({ middleware: "auth" });
+
+  const [facebookAccounts, setFacebookAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchFacebookData = async () => {
+      try {
+        const response = await axios.get("/api/list-accounts", {
+          params: {
+            user_id: user.id,
+          },
+        });
+        setFacebookAccounts(response.data.accounts);
+        // console.log(user?.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (user?.id) {
+      fetchFacebookData();
+    }
+  }, [user?.id]);
+
   const [selectedAccount, setSelectedAccount] = useState();
 
-  const handleAccountSelect = (accountId) => {
-    setSelectedAccount(accountId);
+  const handleAccountSelect = (account) => {
+    setSelectedAccount(account);
+    onSelectAccountId(account);
+  };
+
+  const handleFbIdSelect = (fbid) => {
+    onSelectAccount(fbid); // Memanggil fungsi prop untuk menyampaikan informasi akun terpilih
   };
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState(LinkedAccountData);
+  const [searchResults, setSearchResults] = useState(facebookAccounts);
 
   // Fungsi pencarian
   const handleSearch = (e) => {
@@ -17,15 +47,18 @@ export default function ChooseAccount() {
     setSearchTerm(searchValue);
 
     // Filter data berdasarkan nama
-    const filteredResults = LinkedAccountData.filter((item) => {
+    const filteredResults = facebookAccounts.filter((item) => {
       return item.name.toLowerCase().includes(searchValue);
     });
 
     setSearchResults(filteredResults);
   };
+
   return (
     <div className="h-[300px] 2xl:h-[458px] w-full 2xl:w-[343px] bg-white p-2">
-      <div className="text-lg font-semibold text-black mb-4">Choose Account</div>
+      <div className="text-lg font-semibold text-black mb-4">
+        Choose Account
+      </div>
       <div className="overflow-y-auto max-h-[270px] 2xl:max-h-[403px]">
         <div className="relative mb-3">
           <input
@@ -40,17 +73,18 @@ export default function ChooseAccount() {
           </div>
         </div>
         <div className="flex flex-col gap-1 2xl:gap-3">
-          {searchResults.map((item) => (
+          {facebookAccounts.map((item, index) => (
             <div key={item.id}>
               <div
                 className="border border-neutral-20 p-1 rounded flex flex-row justify-between items-center cursor-pointer"
                 onClick={() => {
                   handleAccountSelect(item.id);
+                  handleFbIdSelect(item.fb_id);
                 }}
               >
                 <div className="flex items-center">
                   <div className="flex w-7 h-7 2xl:w-[33px] 2xl:h-[33px] items-center mr-2 2xl:mr-4">
-                    <img src={`/assets/images/${item.images}`} />
+                    <img src={item.avatar_url} />
                   </div>
                   <div className="flex items-center">
                     <p className="text-xs 2xl:text-sm font-normal text-neutral-80">

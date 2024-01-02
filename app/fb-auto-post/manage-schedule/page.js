@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import ScheduleCalendar from "@/components/dashboard/schedule/scheduleCalendar";
+// import ScheduleCalendar from "@/components/dashboard/schedule/scheduleCalendar";
 import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
 import {
   addDays,
@@ -23,6 +23,13 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import axios from "@/lib/axios";
+import { useAuth } from "@/hooks/auth";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "@/components/dashboard/schedule/DatePicker.css";
+import { useAuthFacebook } from "@/hooks/facebook";
+// import { useAuthFacebook } from "@/hooks/facebook";
 export default function ManageSchedule() {
   const [size, setSize] = React.useState("md");
   const sizes = ["full"];
@@ -67,360 +74,11 @@ export default function ManageSchedule() {
   const endDate = endOfMonthDate.getDate();
   const days = [];
 
-  const handleOpen = (size) => {
+  const handleOpen = (size, postId) => {
     setSize(size);
     onOpen();
+    setSelectedScheduleId(postId);
   };
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState("asc");
-  const itemsPerPage = 5;
-  const [data, setData] = useState([
-    // Your data array goes here
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-error-20",
-      status_border_color: "border-error-60",
-      status_text_color: "text-error-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "Active",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    {
-      title: "Toyota Supra SK8",
-      Name: "Judha Maygustya Account",
-      SED: "23 December 2023",
-      category: "Marketplace Post",
-      Status: "passed",
-      status_bg_color: "bg-success-20",
-      status_border_color: "border-success-60",
-      status_text_color: "text-success-60",
-    },
-    // Example data...
-  ]);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  const handleSortStatus = () => {
-    const sortedData = [...data].sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a.Status.localeCompare(b.Status);
-      } else {
-        return b.Status.localeCompare(a.Status);
-      }
-    });
-
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    setData(sortedData);
-  };
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("asc");
-
-  const Alert2 = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger",
-      },
-    });
-
-    swalWithBootstrapButtons
-      .fire({
-        title: "Schedule Post Will Be Deleted",
-        text: "Are you sure you want to delete your schedule post?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire(
-            "Successfully Delete Schedule Post",
-            "You have successfully deleted the posting schedule, please refresh the website page to display the latest posting schedule list",
-            "success"
-          );
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire(
-            "Are you sure you want to delete your Schedule post?",
-            "Sorry, the schedule failed to delete because you lost connection, please check your connection connection and try again",
-            "error"
-          );
-        }
-      });
-  };
-
-  const Alert3 = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger",
-      },
-    });
-
-    swalWithBootstrapButtons
-      .fire({
-        title: "Schedule Post Will Be Updated",
-        text: "Are you sure you want to update your schedule post?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire(
-            "Successfully Updated Schedule Post",
-            "You have successfully reset the posting schedule and we will upload your content when the specified date arrives",
-            "success"
-          );
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire(
-            "Failed to Update Schedule Post",
-            "Sorry, the schedule failed to add because the date you entered has passed.",
-            "error"
-          );
-        }
-      });
-  };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const currentPageData = data.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-
-  const currentEntriesStart = startIndex + 1;
-  const currentEntriesEnd = Math.min(endIndex, data.length);
-
-  // Generate an array of page numbers to display
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
 
   for (let i = prevMonthEndDate - startDate + 1; i <= prevMonthEndDate; i++) {
     days.push(
@@ -447,6 +105,168 @@ export default function ManageSchedule() {
     );
   }
 
+  const { user } = useAuth();
+
+  const [manageSchedule, setManageSchedule] = useState([]);
+
+  useEffect(() => {
+    const fetchManageScheduleData = async () => {
+      try {
+        const response = await axios.get("/api/manage-schedule/schedule", {
+          params: {
+            user_id: user.id,
+          },
+        });
+        setManageSchedule(response.data.post_list);
+        // console.log(user?.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchManageScheduleData();
+  }, [user?.id, manageSchedule]);
+
+  const [facebookAccounts, setFacebookAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchFacebookData = async () => {
+      try {
+        const response = await axios.get("/api/list-accounts");
+        setFacebookAccounts(response.data.accounts);
+        // console.log(user?.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFacebookData();
+  }, []);
+
+  const getFacebookName = (user_fb_account_id) => {
+    const account = facebookAccounts.find(
+      (account) => account.id === user_fb_account_id
+    );
+    return account ? account.name : "N/A";
+  };
+
+  const [selectedScheduleId, setSelectedScheduleId] = useState(null);
+
+  const [editSchedule, setEditSchedule] = useState([]);
+
+  useEffect(() => {
+    const fetchEditSchedule = async () => {
+      try {
+        const response = await axios.get("/api/manage-schedule/edit-schedule", {
+          params: {
+            id: selectedScheduleId,
+          },
+        });
+        const editScheduleData = response.data.accounts;
+
+        // Check if data is available and has a valid post_time
+        if (editScheduleData && editScheduleData.length > 0) {
+          const postTime = editScheduleData[0].post_time;
+
+          // Parse the post_time to get date, hour, and minute
+          const dateTime = new Date(postTime);
+          const parsedHour = dateTime.getHours();
+          const parsedMinute = dateTime.getMinutes();
+
+          console.log(parsedHour);
+
+          // Update the state variables
+          setTime(parsedHour);
+          setMinute(parsedMinute);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchEditSchedule();
+  }, [selectedScheduleId]);
+
+  const [date, setDate] = useState();
+  const [time, setTime] = useState();
+  const [minute, setMinute] = useState();
+  const [startDatePicker, setStartDatePicker] = useState(new Date());
+  function formatDateTimePicker(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+  const formattedDate = formatDateTimePicker(startDatePicker);
+
+  const formatTimeAndMinuteToHIS = (hour, minute) => {
+    const formattedHour = String(hour).padStart(2, "0");
+    const formattedMinute = String(minute).padStart(2, "0");
+
+    return `${formattedHour}:${formattedMinute}:00`;
+  };
+
+  const formattedTime = formatTimeAndMinuteToHIS(time, minute);
+  const dateTimeInput = `${formattedDate} ${formattedTime}`;
+
+  const handleDateData = ({ date }) => {
+    setDate(date);
+  };
+  const handleTimeData = ({ time, minute }) => {
+    setTime(time);
+    setMinute(minute);
+  };
+
+  const { setUpdateSchedule } = useAuthFacebook();
+
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [status, setStatus] = useState(null);
+
+  const formData = new FormData();
+  formData.append("post_time", dateTimeInput);
+
+  const handleSubmitUpdateSchedule = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    await axios.post("/api/manage-schedule/update-schedule", formData, {
+      params: {
+        id: selectedScheduleId,
+      },
+    });
+  };
+
+  const handleSubmitDeleteSchedule = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    await axios.delete("/api/manage-schedule/schedule", {
+      params: {
+        id: selectedScheduleId,
+      },
+    });
+  };
+
+  const Alert2 = (postId, event) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await handleSubmitDeleteSchedule(event); // Pass the event object
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Handle the "Cancel" button click
+        Swal.fire("Cancelled", "Your file is safe :)", "info");
+      }
+    });
+    setSelectedScheduleId(postId);
+  };
+
   return (
     <div className="flex w-full md:flex-row">
       <div className="flex flex-col w-full">
@@ -454,20 +274,6 @@ export default function ManageSchedule() {
         <div className="md:flex w-full flex-row justify-between">
           <div className="w-full px-3 ml-1 mt-4 text-success-50">
             Active Scheduled
-          </div>
-          <div className="w-full">
-            <button
-              className="w-[200px] h-[35px] my-2 rounded-md  border-1 bg-[#DCDDDE] p-2 text-xs text-black flex item-center justify-center"
-              onClick={handleSortStatus}
-              style={{
-                fontFamily: "Arial, sans-serif", // Example font family
-                fontWeight: "bold", // Example font weight
-                color: "#333", // Example text color
-                borderRadius: "5px", // Example border radius
-              }}
-            >
-              Sort by Status: {sortOrder === "asc" ? "Suspend" : "Active"}
-            </button>
           </div>
         </div>
 
@@ -496,196 +302,171 @@ export default function ManageSchedule() {
               </tr>
             </thead>
             <tbody>
-              {currentPageData.map((item, index) => (
-                <tr key={index} className="bg-white">
-                  <td
-                    scope="row"
-                    className="px-6 py-4 font-medium  whitespace-nowrap text-black"
-                  >
-                    {item.title}
-                  </td>
-                  <td className="px-6 py-4">{item.Name}</td>
-                  <td className="px-6 py-4">{item.SED}</td>
-                  <td className="px-6 py-4">{item.category}</td>
+              {manageSchedule && manageSchedule.length > 0
+                ? manageSchedule.map((item, index) => (
+                    <tr key={item.id} className="bg-white">
+                      <td
+                        scope="row"
+                        className="px-6 py-4 font-medium  whitespace-nowrap text-black"
+                      >
+                        {item.post.title}
+                      </td>
+                      <td className="px-6 py-4">
+                        {getFacebookName(item.post.user_fb_account_id)}
+                      </td>
 
-                  <td className="">
-                    <div
-                      className={`flex items-center justify-center rounded-md border ${item.status_bg_color} ${item.status_border_color} ${item.status_text_color}  h-[18px] w-[56px] text-[10px] ml-5`}
-                    >
-                      {item.Status}
-                    </div>
-                  </td>
+                      <td className="px-6 py-4">{item.post.post_time}</td>
+                      <td className="px-6 py-4">{item.post.hashtag}</td>
 
-                  <td>
-                    <div className="flex ">
-                      {sizes.map((size) => (
-                        <Button
-                          key={size}
-                          onPress={() => handleOpen(size)}
-                          color="white"
-                          variant="light"
+                      <td className="">
+                        <div
+                          className={`flex items-center justify-center rounded-md border h-[18px] w-[56px] text-[10px] ml-5`}
                         >
-                          <Image
-                            src="/assets/icons/icons-edit.png"
-                            width="32"
-                            height="32"
-                          />
-                        </Button>
-                      ))}
-                      <Modal
-                        size="5xl"
-                        contentModal={contentModal}
-                        isOpen={isOpen}
-                        onClose={onClose}
-                      >
-                        <ModalContent>
-                          {(onClose) => (
-                            <>
-                              <ModalHeader>
-                                Determine the schedule date and time
-                              </ModalHeader>
-                              <ModalBody>
-                                <div className="flex justify-between">
-                                  <div className="w-1/2">
-                                    <div className="p-4 border border-primary-20 rounded-lg">
-                                      <ScheduleCalendar />
-                                    </div>
-                                  </div>
-                                  <div className="w-1/3">
-                                    <ScheduleTime />
-                                    <div className="flex flex-col w-full mb-2">
-                                      <div className="flex mb-1">
-                                        <p className="font-normal text-base text-neutral-70">
-                                          Title Schedule
-                                        </p>
-                                        <p className="font-normal text-base text-error-base">
-                                          *
-                                        </p>
-                                      </div>
-                                      <input
-                                        className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
-                                        type="text"
-                                        placeholder="Your title schedule"
-                                      />
-                                    </div>
-                                    <div className="w-full flex justify-start items-center">
-                                      <div className="flex mr-4">
-                                        <input
-                                          type="radio"
-                                          id="radio1"
-                                          name="radios"
-                                          onChange={handleRadio1Change}
-                                          checked={radio1Selected}
-                                        />
-                                        <label htmlFor="radio1">
-                                          <span className="ml-2 text-[12px] font-normal text-neutral-70">
-                                            Today only
-                                          </span>
-                                        </label>
-                                      </div>
-                                      <div className="flex">
-                                        <input
-                                          type="radio"
-                                          id="radio2"
-                                          name="radios"
-                                          onChange={handleRadio2Change}
-                                          checked={radio2Selected}
-                                        />
-                                        <label htmlFor="radio2">
-                                          <span className="ml-2 text-[12px] font-normal text-neutral-70">
-                                            Repeat on the same date
-                                          </span>
-                                        </label>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </ModalBody>
-                              <ModalFooter>
+                          {/* {item.Status} */}
+                        </div>
+                      </td>
+
+                      <td>
+                        <div className="flex ">
+                          {sizes.map((size) => (
+                            <Button
+                              key={size}
+                              onPress={() => {
+                                handleOpen(size, item.post.id);
+                                setSelectedScheduleId(item.post.id);
+                              }}
+                              color="white"
+                              variant="light"
+                            >
+                              <Image
+                                src="/assets/icons/icons-edit.png"
+                                width="32"
+                                height="32"
+                              />
+                            </Button>
+                          ))}
+                          <Modal
+                            size="5xl"
+                            contentModal={contentModal}
+                            isOpen={isOpen}
+                            onClose={onClose}
+                          >
+                            <ModalContent>
+                              {(onClose) => (
                                 <>
-                                  <button
-                                    className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-[#EDEDED] text-neutral-base rounded-md"
-                                    onClick={onClose}
-                                  >
-                                    Clear
-                                  </button>
-                                  <button
-                                    className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
-                                    onClick={onClose}
-                                  >
-                                    Save
-                                  </button>
+                                  <ModalHeader>
+                                    Determine the schedule date and time
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    <div className="flex justify-between">
+                                      <div className="w-1/2">
+                                        <div className="p-4 border border-primary-20 rounded-lg">
+                                          <DatePicker
+                                            selected={startDatePicker}
+                                            onChange={(date) =>
+                                              setStartDatePicker(date)
+                                            }
+                                            inline
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="w-1/3">
+                                        <ScheduleTime
+                                          setNewTime={time}
+                                          setNewMinute={minute}
+                                          setTimeData={handleTimeData}
+                                        />
+
+                                        <div className="flex flex-col w-full mb-2">
+                                          <div className="flex mb-1">
+                                            <p className="font-normal text-base text-neutral-70">
+                                              Title Schedule
+                                            </p>
+                                            <p className="font-normal text-base text-error-base">
+                                              *
+                                            </p>
+                                          </div>
+                                          <input
+                                            className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
+                                            type="text"
+                                            placeholder="Your title schedule"
+                                          />
+                                        </div>
+                                        <div className="w-full flex justify-start items-center">
+                                          <div className="flex mr-4">
+                                            <input
+                                              type="radio"
+                                              id="radio1"
+                                              name="radios"
+                                              onChange={handleRadio1Change}
+                                              checked={radio1Selected}
+                                            />
+                                            <label htmlFor="radio1">
+                                              <span className="ml-2 text-[12px] font-normal text-neutral-70">
+                                                Today only
+                                              </span>
+                                            </label>
+                                          </div>
+                                          <div className="flex">
+                                            <input
+                                              type="radio"
+                                              id="radio2"
+                                              name="radios"
+                                              onChange={handleRadio2Change}
+                                              checked={radio2Selected}
+                                            />
+                                            <label htmlFor="radio2">
+                                              <span className="ml-2 text-[12px] font-normal text-neutral-70">
+                                                Repeat on the same date
+                                              </span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <>
+                                      <button
+                                        className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-[#EDEDED] text-neutral-base rounded-md"
+                                        onClick={onClose}
+                                      >
+                                        Clear
+                                      </button>
+                                      <button
+                                        className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
+                                        onClick={handleSubmitUpdateSchedule}
+                                        // encType="application/x-www-form-urlencoded"
+                                      >
+                                        Save
+                                      </button>
+                                    </>
+                                  </ModalFooter>
                                 </>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
-                      <button
-                        className="w-[32px] h-[32px] my-1 rounded-md  ml-0"
-                        onClick={Alert2}
-                      >
-                        <Image
-                          src="/assets/icons/icons-delete.png"
-                          width="32"
-                          height="32"
-                          className="mr-[14px]"
-                        />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                              )}
+                            </ModalContent>
+                          </Modal>
+                          <button
+                            className="w-[32px] h-[32px] my-1 rounded-md  ml-0"
+                            onClick={() => {
+                              Alert2(item.post.id, event);
+                              setSelectedScheduleId(item.post.id);
+                            }}
+                          >
+                            <Image
+                              src="/assets/icons/icons-delete.png"
+                              width="32"
+                              height="32"
+                              className="mr-[14px]"
+                            />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                : "No dataa"}
             </tbody>
           </table>
-          <div className="flex justify-between items-center mt-3 ml-7 text-gray-500 dark:text-gray-400 text-[14px]">
-            <div>
-              Showing data {currentEntriesStart} to {currentEntriesEnd} of{" "}
-              {data.length} entries
-            </div>
-            <div className="flex space-x-4">
-              <button
-                className="bg-[#F5F5F5] text-black p-2 rounded-md"
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Prev
-              </button>
-              {pageNumbers.map((pageNumber) => (
-                <button
-                  key={pageNumber}
-                  className={`bg-[#F5F5F5] text-black p-2 rounded-md ${
-                    pageNumber === currentPage ? "font-bold" : ""
-                  }`}
-                  onClick={() => handlePageChange(pageNumber)}
-                  style={{
-                    borderColor:
-                      pageNumber === currentPage ? "blue" : "#F5F5F5",
-                    cursor: "pointer",
-                  }}
-                >
-                  {pageNumber}
-                </button>
-              ))}
-              <button
-                className="bg-[#F5F5F5] text-black p-2 rounded-md"
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage * itemsPerPage >= data.length}
-                style={{
-                  borderColor:
-                    currentPage * itemsPerPage >= data.length
-                      ? "#F5F5F5"
-                      : "blue",
-                  cursor:
-                    currentPage * itemsPerPage >= data.length
-                      ? "not-allowed"
-                      : "pointer",
-                }}
-              >
-                Next
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

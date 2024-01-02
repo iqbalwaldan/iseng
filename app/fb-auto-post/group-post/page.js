@@ -10,6 +10,7 @@ import TimeStart from "@/components/dashboard/schedule/timeStart";
 import TextEditor from "@/components/dashboard/text-editor/editor";
 import ProcessedImage from "@/components/fb-image_upload/processedImage";
 import InputError from "@/components/inputError";
+import { useAuth } from "@/hooks/auth";
 import { useGroupPost } from "@/hooks/groupPost";
 import axios from "@/lib/axios";
 import {
@@ -20,59 +21,34 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Swal from "sweetalert2";
-
-const hashTagData = [
-  {
-    id: "1",
-    name: "sellcarsurabaya",
-  },
-  {
-    id: "2",
-    name: "car",
-  },
-  {
-    id: "3",
-    name: "secondcar",
-  },
-  {
-    id: "4",
-    name: "cheapcar",
-  },
-  {
-    id: "5",
-    name: "sellcarsidoarjo",
-  },
-  {
-    id: "6",
-    name: "cheapcar",
-  },
-  {
-    id: "7",
-    name: "sellcarsidoarjo",
-  },
-  {
-    id: "8",
-    name: "usedcarshowroom",
-  },
-  {
-    id: "9",
-    name: "toyotasupra",
-  },
-  {
-    id: "10",
-    name: "sellcarsurabaya",
-  },
-  {
-    id: "11",
-    name: "car",
-  },
-];
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "@/components/dashboard/schedule/DatePicker.css";
+import ScheduleTime from "@/components/dashboard/schedule/scheduleTime";
+import { useAuthFacebook } from "@/hooks/facebook";
 
 export default function GroupPost() {
   const [loading, setLoading] = useState(false);
+
+  const [selectedAccount, setSelectedAccount] = useState();
+  const [selectedAccountId, setSelectedAccountId] = useState();
+
+  const handleAccountSelect = (account) => {
+    setSelectedAccount(account);
+  };
+  const handleAccountSelectId = (accountId) => {
+    setSelectedAccountId(accountId);
+  };
+
+  const [selectedGroupId, setSelectedGroupId] = useState([]);
+
+  const handleSelectedGroupIdChange = (groupId) => {
+    setSelectedGroupId(groupId);
+  };
+
   const [processedImage, setProcessedImage] = useState(null);
   const [imageUploaded, setImageUploaded] = useState(false);
 
@@ -88,7 +64,21 @@ export default function GroupPost() {
 
   const handleRegenerateColor = () => {
     setRegenerateBackgroundColor(generateRandomColor());
-    console.log(regenerateBackgroundColor);
+    borderedImage(borderedImage(image)); // Pastikan untuk menyertakan parameter yang sesuai
+  };
+
+  const dataURLtoBlob = (dataURL) => {
+    const arr = dataURL.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new Blob([u8arr], { type: mime });
   };
 
   const borderedImage = (imageUrl) => {
@@ -118,7 +108,10 @@ export default function GroupPost() {
       // Convert the canvas to a data URL (base64 encoded image)
       const processedImageUrl = canvas.toDataURL("image/png");
 
+      const blob = dataURLtoBlob(processedImageUrl);
+
       setProcessedImage(processedImageUrl);
+      setImage(blob);
       setImageUploaded(true);
     };
   };
@@ -139,7 +132,7 @@ export default function GroupPost() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [contentModal, setContentModal] = React.useState("");
 
-  const contents = ["start", "end", "caption"];
+  const contents = ["start", "end", "schedule", "caption"];
 
   const handleOpenModal = (contentModal) => {
     setContentModal(contentModal);
@@ -172,66 +165,54 @@ export default function GroupPost() {
     setIsDropdownOpen(false);
   };
 
-  const [success, setSuccess] = useState(true);
+  // handle time data
 
-  const handleSaveButtonClick = () => {
-    // Swal.fire({
-    //   imageUrl: "/assets/icons/alert-circle-warning.png",
-    //   imageHeight: 70,
-    //   imageWidth: 70,
-    //   title: "Successfully Sending Inbox to Friendlist",
-    //   text: "You have successfully sent an inbox to your friendlist",
-    //   showCancelButton: true,
-    //   cancelButtonText: "cancel",
-    //   confirmButtonText: "save",
-    //   buttonsStyling: false,
-    //   reverseButtons: true,
-    //   customClass: {
-    //     title: "sweet_titleImportant",
-    //     htmlContainer: "sweet_textImportant",
-    //     cancelButton: "alert-btn-cancel",
-    //     confirmButton: "alert-btn-dialog",
-    //   },
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     if (success) {
-    //       Swal.fire({
-    //         imageUrl: "/assets/icons/alert-circle-success.png",
-    //         imageHeight: 70,
-    //         imageWidth: 70,
-    //         title: "Successfully Sending Inbox to Friendlist",
-    //         text: "You have successfully sent an inbox to your friendlist",
-    //         confirmButtonText: "Okey",
-    //         buttonsStyling: false,
-    //         customClass: {
-    //           title: "sweet_titleImportant",
-    //           htmlContainer: "sweet_textImportant",
-    //           confirmButton: "alert-btn",
-    //         },
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         imageUrl: "/assets/icons/alert-circle-danger.png",
-    //         imageHeight: 70,
-    //         imageWidth: 70,
-    //         title: "Failed Sending Inbox to Friendlist",
-    //         text: "Sorry, the inbox sending process failed due to a problem. Please try again later",
-    //         confirmButtonText: "Try Again",
-    //         buttonsStyling: false,
-    //         customClass: {
-    //           title: "sweet_titleImportant",
-    //           htmlContainer: "sweet_textImportant",
-    //           confirmButton: "alert-btn",
-    //         },
-    //       });
-    //     }
-    //   } else if (result.isDenied) {
-    //     onclose();
-    //   }
-    // });
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [startTime, setStartTime] = useState();
+  const [startMinute, setStartMinute] = useState();
+
+  const handleStartData = ({ time, minute }) => {
+    setStartTime(time);
+    setStartMinute(minute);
+  };
+  const [endTime, setEndTime] = useState();
+  const [endMinute, setEndMinute] = useState();
+
+  const handleEndData = ({ time, minute }) => {
+    setEndTime(time);
+    setEndMinute(minute);
   };
 
-  const { setGroupPost } = useGroupPost();
+  const [time, setTime] = useState();
+  const [minute, setMinute] = useState();
+  const [startDatePicker, setStartDatePicker] = useState(new Date());
+  function formatDateTimePicker(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+  const formattedDate = formatDateTimePicker(startDatePicker);
+
+  const formatTimeAndMinuteToHIS = (hour, minute) => {
+    const formattedHour = String(hour).padStart(2, "0");
+    const formattedMinute = String(minute).padStart(2, "0");
+
+    return `${formattedHour}:${formattedMinute}:00`;
+  };
+
+  const formattedTime = formatTimeAndMinuteToHIS(time, minute);
+  const dateTimeInput = `${formattedDate} ${formattedTime}`;
+
+  const handleTimeData = ({ time, minute }) => {
+    setTime(time);
+    setMinute(minute);
+  };
+
+  const { setGroupPost, setGroupSchedulePost } = useGroupPost();
 
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -242,15 +223,48 @@ export default function GroupPost() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
+    const finalMessage = title + "\n" + price + "\n" + caption + "\n" + hashtag;
+    const groupIds = Array.isArray(selectedGroupId)
+      ? selectedGroupId
+      : [selectedGroupId];
 
     setGroupPost({
-      title,
-      price,
-      caption,
-      hashtag,
-      image,
+      group_id: groupIds.reduce((acc, id, index) => {
+        acc[index] = id;
+        return acc;
+      }, {}),
+      message: finalMessage,
+      file: image,
+      setErrors,
+      setStatus,
+    }).finally(() => {
+      setLoading(false);
+      // showCustomErrorAlert();
     });
-    showCustomErrorAlert();
+  };
+
+  const { user } = useAuth();
+
+  const handleSubmitSchedule = (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    setGroupSchedulePost({
+      user_id: user.id,
+      user_fb_account_id: selectedAccountId,
+      title: title,
+      price: price,
+      caption: caption,
+      hashtag: hashtag,
+      post_time: dateTimeInput,
+      image: image,
+      setErrors,
+      setStatus,
+    }).finally(() => {
+      setLoading(false);
+      // showCustomErrorAlert();
+    });
   };
 
   const showCustomErrorAlert = () => {
@@ -297,6 +311,7 @@ export default function GroupPost() {
   };
 
   const [activeTab, setActiveTab] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formCaptionElements = [
     <GenerateCaption
@@ -308,17 +323,21 @@ export default function GroupPost() {
       dataSelectCaption={dataGenerateCaption}
       handleChangeSelectCaption={handleChangeGenerateCaption}
       contentAPI={contentAPI}
+      isLoading={isLoading}
     />,
   ];
 
   const generateCaption = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
-      const response = await axios.get("/api/open-ai/generate-caption", {
-        params: { title: dataGenerateCaption.title },
+      const response = await axios.get("/api/open-ai/generate", {
+        params: {
+          input:
+            "buatkan caption untuk menjual " +
+            dataGenerateCaption.title +
+            "dalam bahasa indonesia",
+        },
       });
-
-      // Handle the API response
 
       const content = response.data.data.choices[0].message.content;
       setContentAPI(content);
@@ -328,36 +347,57 @@ export default function GroupPost() {
     } catch (error) {
       // Handle errors
       console.error("Error fetching data:", error);
+    } finally {
+      // Set loading to false after the request is complete (whether successful or not)
+      setIsLoading(false);
     }
   };
 
-  // handle time data
+  const [manualHashtag, setManualHashtag] = useState("");
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [generateHashtag, setGenerateHashtag] = useState("");
 
-  const [startTime, setStartTime] = useState();
-  const [startMinute, setStartMinute] = useState();
+  const hashtagString = generateHashtag;
 
-  const handleStartData = ({ time, minute }) => {
-    setStartTime(time);
-    setStartMinute(minute);
-  };
-  const [endTime, setEndTime] = useState();
-  const [endMinute, setEndMinute] = useState();
+  // Memisahkan string menjadi array berdasarkan "\n"
+  const hashtagArray = hashtagString.split("\n");
 
-  const handleEndData = ({ time, minute }) => {
-    setEndTime(time);
-    setEndMinute(minute);
+  // Menghapus angka dan titik dari setiap elemen array
+  const cleanedHashtags = hashtagArray.map((hashtag) =>
+    hashtag.replace(/^\d+\.\s*/, "")
+  );
+
+  const openAIGenerateHashtag = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get("/api/open-ai/generate", {
+        params: { input: "buatkan hashtag tentang " + title },
+      });
+      const content = response.data.data.choices[0].message.content;
+      setGenerateHashtag(content);
+      console.log(response.data.choice);
+    } catch (error) {
+      // Handle errors
+      console.error("Error fetching data:", error);
+    } finally {
+      // Set loading to false after the request is complete (whether successful or not)
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="w-full h-full flex">
       <form></form>
       <div className="w-[24.5%] h-full">
-        <ChooseAccount />
+        <ChooseAccount
+          onSelectAccount={handleAccountSelect}
+          onSelectAccountId={handleAccountSelectId}
+        />
         <div className="mb-6"></div>
-        <ChooseGroup />
+        <ChooseGroup
+          selectedAccount={selectedAccount}
+          onSelectedGroupIdChange={handleSelectedGroupIdChange}
+        />
       </div>
       <div className="w-[75.5%] h-full">
         <div className="flex">
@@ -377,6 +417,7 @@ export default function GroupPost() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
+                <InputError messages={errors.title} className="mt-2" />
               </div>
               <div className="flex flex-col w-full mb-2">
                 <div className="flex mb-1">
@@ -406,11 +447,11 @@ export default function GroupPost() {
               />
               <p className="flex justify-end text-xs font-normal text-neutral-70 mb-2">
                 don&#39;t have a caption yet?&nbsp;
-                <button onClick={() => handleOpenModal("caption")}>
+                <span onClick={() => handleOpenModal("caption")}>
                   <span className="text-xs font-bold text-primary-base cursor-pointer">
                     Generate here
                   </span>
-                </button>
+                </span>
               </p>
               <div className="flex flex-col w-full mb-2">
                 <div className="flex mb-1">
@@ -423,21 +464,38 @@ export default function GroupPost() {
                   className="border border-[#CFCFCF] p-3 placeholder:text-neutral-30 text-neutral-70 focus:outline-none h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                   type="text"
                   placeholder="Your hashtag for the post"
+                  value={hashtag}
+                  onChange={(e) => {
+                    setHashtag(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex flex-wrap gap-x-1 gap-y-2 mb-4 2xl:mb-9">
-                {hashTagData.map((item) => (
-                  <div key={item.id}>
-                    <div className="h-5 bg-white shadow-md text-xs font-normal text-primary-base px-1 py-[2px] box-border rounded-[13px] cursor-pointer">
-                      #{item.name}
-                    </div>
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center loading"></div>
                   </div>
-                ))}
+                ) : (
+                  <>
+                    {cleanedHashtags.map((hashtag, index) => (
+                      <div
+                        className={`h-5 bg-white shadow-md text-xs font-normal text-primary-base px-1 py-[2px] box-border rounded-[13px] cursor-pointer `}
+                        key={index}
+                        onClick={() => setSelectedHashtagIndex(index)}
+                      >
+                        {hashtag}
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
               <div className="w-full flex justify-end">
-                <button className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md">
+                <span
+                  onClick={openAIGenerateHashtag}
+                  className="cursor-pointer text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md"
+                >
                   Regenerate
-                </button>
+                </span>
               </div>
             </div>
           </div>
@@ -475,12 +533,12 @@ export default function GroupPost() {
               </div>
             </div>
             <div className="w-full flex justify-end">
-              <button
+              <span
                 onClick={handleRegenerateColor}
-                className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md"
+                className="cursor-pointer text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md"
               >
                 Regenerate
-              </button>
+              </span>
             </div>
           </div>
         </div>
@@ -490,19 +548,19 @@ export default function GroupPost() {
               Random Delay
             </h1>
             <div className="flex items-center justify-evenly">
-              <button
+              <span
                 className="flex items-center justify-center cursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                 onClick={() => handleOpenModal("start")}
               >
                 start
-              </button>
+              </span>
               <div className="border-[3px] border-neutral-30 w-[29px] mx-2"></div>
-              <button
+              <span
                 className="flex items-center justify-center cursor-pointer border border-[#CFCFCF] text-neutral-90 w-24 2xl:w-[132px] h-10 2xl:h-12 rounded-md text-sm 2xl:text-base font-light"
                 onClick={() => handleOpenModal("end")}
               >
                 end
-              </button>
+              </span>
               <Modal
                 size="5xl"
                 contentModal={contentModal}
@@ -517,7 +575,9 @@ export default function GroupPost() {
                           ? "Determine the schedule date and time"
                           : contentModal === "end"
                           ? "Determine the schedule date and time"
-                          : "Generate captions for marketplace"}
+                          : contentModal === "schedule"
+                          ? "Determine the schedule date and time"
+                          : "Generate captions for group post"}
                       </ModalHeader>
                       <ModalBody>
                         {contentModal === "start" ? (
@@ -649,13 +709,32 @@ export default function GroupPost() {
                               </div>
                             </div>
                           </div>
+                        ) : contentModal === "schedule" ? (
+                          <div className="flex justify-between">
+                            <div className="w-1/2">
+                              <div className="p-2 border border-primary-20 rounded-lg flex items-center justify-center">
+                                <DatePicker
+                                  selected={startDatePicker}
+                                  onChange={(date) => setStartDatePicker(date)}
+                                  inline
+                                />
+                              </div>
+                            </div>
+                            <div className="w-1/3">
+                              <ScheduleTime
+                                setNewTime={time}
+                                setNewMinute={minute}
+                                setTimeData={handleTimeData}
+                              />
+                            </div>
+                          </div>
                         ) : (
                           <div className="px-[10%]">
                             <div className="mb-4">
                               {formCaptionElements[activeTab]}
                             </div>
                             <div className="flex flex-wrap gap-x-6 mx-auto">
-                              <button
+                              <span
                                 disabled={activeTab === 0 ? "disabled" : ""}
                                 onClick={() => setActiveTab((prev) => prev - 1)}
                                 className={`px-4 py-2 rounded-md text-base font-medium bg-primary-base text-white ${
@@ -665,8 +744,8 @@ export default function GroupPost() {
                                 }`}
                               >
                                 <MdNavigateBefore />
-                              </button>
-                              <button
+                              </span>
+                              <span
                                 disabled={
                                   activeTab === formCaptionElements.length - 1
                                     ? "disabled"
@@ -680,14 +759,14 @@ export default function GroupPost() {
                                 }`}
                               >
                                 <MdNavigateNext onClick={generateCaption} />
-                              </button>
+                              </span>
                               {activeTab === formCaptionElements.length - 1 ? (
-                                <button
+                                <span
                                   className="px-4 py-2 rounded-md text-base font-medium bg-primary-base text-white"
                                   onClick={() => console.log(data)}
                                 >
                                   Submit
-                                </button>
+                                </span>
                               ) : null}
                             </div>
                           </div>
@@ -696,33 +775,33 @@ export default function GroupPost() {
                       <ModalFooter>
                         {contentModal === "schedule" ? (
                           <>
-                            <button
+                            <span
                               className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-[#EDEDED] text-neutral-base rounded-md"
                               onClick={onClose}
                             >
                               Clear
-                            </button>
-                            <button
+                            </span>
+                            <span
                               className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
-                              onClick={handleSaveStartSchedule}
+                              onClick={handleSubmitSchedule}
                             >
                               Save
-                            </button>
+                            </span>
                           </>
                         ) : (
                           <>
-                            <button
+                            <span
                               className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-[#EDEDED] text-neutral-base rounded-md"
                               onClick={onClose}
                             >
                               Clear
-                            </button>
-                            <button
+                            </span>
+                            <span
                               className="w-[100px] h-10 text-base font-medium flex items-center justify-center bg-primary-base text-white rounded-md"
                               onClick={onClose}
                             >
                               Next
-                            </button>
+                            </span>
                           </>
                         )}
                       </ModalFooter>
@@ -737,25 +816,24 @@ export default function GroupPost() {
                 Save settings
               </p>
             </div>
-            <div>
-              <p>Selected Start Date: {startDate.toDateString()}</p>
-              <p>Selected End Date: {endDate.toDateString()}</p>
-              <p>Start Time: {startTime}</p>
-              <p>Start Minute: {startMinute}</p>
-              <p>End Time: {endTime}</p>
-              <p>End Minute: {endMinute}</p>
-            </div>
           </div>
           <div className="flex items-end">
-            <button className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md">
-              Send now
+            <button
+              onClick={handleSubmit}
+              type="submit"
+              className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md"
+            >
+              {loading ? "Loading..." : "Send now"}
             </button>
-            <button className="mx-2 2xl:mx-4 text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md">
+            <button
+              onClick={() => handleOpenModal("schedule")}
+              className="mx-2 2xl:mx-4 text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md"
+            >
               Send by Schedule
             </button>
-            <button className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md">
+            <span className="text-sm 2xl:text-base font-medium text-neutral-10 bg-primary-base p-2 2xl:px-4 2xl:py-2 rounded-md">
               Clear All
-            </button>
+            </span>
           </div>
         </div>
       </div>

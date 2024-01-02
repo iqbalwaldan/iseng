@@ -85,7 +85,7 @@ export default function Register() {
     <div className="flex flex-col md:flex-row">
       <CarouselSharein />
       <div className="md:w-register-right h-screen">
-        <div className="bg-white w-full h-full md:px-16 md:py-3">
+        <div className="bg-white w-full h-full md:px-16 md:py-3 2xl:my-14">
           <LogoSharein />
           <h1 className="font-bold text-2xl 2xl:text-4xl text-neutral-80 mb-1 2xl:mb-4">
             Sign Up

@@ -77,7 +77,7 @@ export default function Reset({ params }) {
                 {/* <InputError messages={errors.password} className="mt-2" /> */}
               </div>
             </div>
-            <InputError messages={errors.password} className="mt-2" />
+            {/* <InputError messages={errors.password} className="mt-2" /> */}
             <div className=" w-full flex flex-col mt-6">
               <div className="flex mb-1">
                 <p className="font-normal text-base text-neutral-70">
@@ -97,7 +97,7 @@ export default function Reset({ params }) {
                   className="mt-2"
                 /> */}
               </div>
-              <InputError messages={errors.password} className="mt-2" />
+              {/* <InputError messages={errors.password} className="mt-2" /> */}
             </div>
             <button className="bg-[#2652FF] w-full h-[51px] mt-10 rounded-md py-2 px-4 text-xl font-semibold text-white">
               Submit

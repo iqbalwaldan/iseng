@@ -34,7 +34,10 @@ export default function TextEditor({ content }) {
         <button className="ql-list" value="bullet"></button>
         <button className="ql-list" value="ordered"></button>
       </div>
-      <div ref={quillRef} id="editor" />
+      <div ref={quillRef} id="editor">
+        {content}
+      </div>
+      {/* <div ref={quillRef} id="editor" /> */}
     </div>
   );
 }

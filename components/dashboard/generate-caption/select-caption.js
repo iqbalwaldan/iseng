@@ -6,8 +6,7 @@ export default function SelectCaption(props) {
   const handleTextChange = (editorValue) => {
     setDescription(editorValue);
   };
-  const { dataSelectCaption, handleChangeSelectCaption } = props;
-  const [isLoading, setIsLoading] = useState(false);
+  const { dataSelectCaption, handleChangeSelectCaption, isLoading } = props;
 
   return (
     <div className="flex">
@@ -36,7 +35,13 @@ export default function SelectCaption(props) {
         <div className="">
           <div className="w-full">
             <div className="w-full h-[200px] 2xl:h-[300px] border border-neutral-20 p-2 2xl:p-4 rounded-lg overflow-y-auto ">
-              {isLoading ? <p>Loading...</p> : <>{props.contentAPI}</>}
+              {isLoading ? (
+                <div className="h-[200px] flex items-center justify-center">
+                  <div className="loading"></div>
+                </div>
+              ) : (
+                <>{props.contentAPI}</>
+              )}
             </div>
             <div className="flex items-center justify-end cursor-pointer mt-2">
               <img src="/assets/icons/copy.png" width={14} height={14} />

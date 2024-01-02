@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Hero() {
@@ -18,9 +19,11 @@ export default function Hero() {
             Sharein is a cutting-edge tool that streamlines and speeds up post
             management on Facebook using advanced auto posting technology.
           </p>
-          <button className="px-14 py-4 rounded-lg text-xl font-semibold text-neutral-10 bg-[#F7B217]">
-            Get Started
-          </button>
+          <Link href="#features">
+            <button className="px-14 py-4 rounded-lg text-xl font-semibold text-neutral-10 bg-[#F7B217]">
+              Get Started
+            </button>
+          </Link>
         </div>
         <div className="hidden flex-1 lg:flex justify-center items-center w-[350px] h-[300px] 2xl:w-[453px] 2xl:h-[337px]">
           <img src="/assets/images/chat-image.png"></img>

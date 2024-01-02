@@ -4,126 +4,128 @@ import ChartActiveAccount from "@/components/dashboard/chart/chart-active-accoun
 import ChartGroupPost from "@/components/dashboard/chart/chart-group-post";
 import ChartMarketPlacePost from "@/components/dashboard/chart/chart-marketplace-post";
 import ChartSuspendAccount from "@/components/dashboard/chart/chart-suspend-account";
+import { useAuth } from "@/hooks/auth";
+import { getFacebookResponse } from "@/hooks/facebook";
 import axios from "@/lib/axios";
 import { useEffect, useState } from "react";
 
 export const LinkedAccountData = [
   {
-    id: 1,
+    id: "1",
     images: "fb_pp1.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: 2,
+    id: "2",
     images: "fb_pp2.png",
     name: "Maya Wulandari",
     status: "suspend",
   },
   {
-    id: 3,
+    id: "3",
     images: "fb_pp3.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: 4,
+    id: "4",
     images: "fb_pp4.png",
     name: "Budi Santoso",
     status: "active",
   },
   {
-    id: 5,
+    id: "5",
     images: "fb_pp5.png",
     name: "Agus Widodo",
     status: "suspend",
   },
   {
-    id: 6,
+    id: "6",
     images: "fb_pp6.png",
     name: "Dian Purnama",
     status: "suspend",
   },
   {
-    id: 7,
+    id: "7",
     images: "fb_pp7.png",
     name: "Rini Susanti",
     status: "suspend",
   },
   {
-    id: 8,
+    id: "8",
     images: "fb_pp8.png",
     name: "Siti Rahmawati",
     status: "suspend",
   },
   {
-    id: 9,
+    id: "9",
     images: "fb_pp9.png",
     name: "Dewi Kusuma",
     status: "active",
   },
   {
-    id: 10,
+    id: "10",
     images: "fb_pp10.png",
     name: "Andi Rahman",
     status: "active",
   },
   {
-    id: 11,
+    id: "11",
     images: "fb_pp1.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: 12,
+    id: "12",
     images: "fb_pp2.png",
     name: "Maya Wulandari",
     status: "suspend",
   },
   {
-    id: 13,
+    id: "13",
     images: "fb_pp3.png",
     name: "Rina Fitriani",
     status: "active",
   },
   {
-    id: 14,
+    id: "14",
     images: "fb_pp4.png",
     name: "Budi Santoso",
     status: "active",
   },
   {
-    id: 15,
+    id: "15",
     images: "fb_pp5.png",
     name: "Agus Widodo",
     status: "suspend",
   },
   {
-    id: 16,
+    id: "16",
     images: "fb_pp6.png",
     name: "Dian Purnama",
     status: "suspend",
   },
   {
-    id: 17,
+    id: "17",
     images: "fb_pp7.png",
     name: "Rini Susanti",
     status: "suspend",
   },
   {
-    id: 18,
+    id: "18",
     images: "fb_pp8.png",
     name: "Siti Rahmawati",
     status: "suspend",
   },
   {
-    id: 19,
+    id: "19",
     images: "fb_pp9.png",
     name: "Dewi Kusuma",
     status: "active",
   },
   {
-    id: 20,
+    id: "20",
     images: "fb_pp10.png",
     name: "Andi Rahman",
     status: "active",
@@ -197,7 +199,7 @@ export default function Dashboard() {
 
   const loginFacebook = async (e) => {
     e.preventDefault();
-    const facebookUrl = await axios.get("/api/auth/facebook");
+    const facebookUrl = await axios.get("/api/auth/facebook/redirect");
     setFacebookUrl(facebookUrl.data);
     // window.location.href = facebookUrl;
   };
@@ -208,6 +210,29 @@ export default function Dashboard() {
       window.location.href = facebookUrl;
     }
   }, [facebookUrl]);
+
+  const { user } = useAuth({ middleware: "auth" });
+
+  const [facebookAccounts, setFacebookAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchFacebookData = async () => {
+      try {
+        const response = await axios.get("/api/list-accounts", {
+          params: {
+            user_id: user.id,
+          },
+        });
+        setFacebookAccounts(response.data.accounts);
+        console.log(user?.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Panggil fungsi fetch data saat komponen dipasang
+    fetchFacebookData();
+  }, [user?.id]);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -328,7 +353,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="w-full max-h-[565px] 2xl:max-h-[677px] px-2 flex flex-col items-center mt-4 gap-4 overflow-y-scroll">
-            {LinkedAccountData.map((item) => (
+            {/* {LinkedAccountData.map((item) => (
               <div
                 key={item.id}
                 className="p-2 w-full flex flex-row items-center justify-between border border-neutral-20 rounded-lg"
@@ -337,6 +362,31 @@ export default function Dashboard() {
                   <div className="rounded-full w-[33px] h-[33px] overflow-hidden">
                     <img
                       src={`/assets/images/${item.images}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="text-xs 2xl:text-sm font-normal">{item.name}</p>
+                </div>
+                <div
+                  className={`flex items-center justify-center border w-14 h-[18px] rounded-[5px] ${
+                    item.status === "suspend"
+                      ? "bg-error-20 border-error-60 text-error-60"
+                      : "bg-success-20 border-success-60 text-success-60"
+                  } text-[10px] font-light`}
+                >
+                  {item.status}
+                </div>
+              </div>
+            ))} */}
+            {facebookAccounts.map((item) => (
+              <div
+                key={item.id}
+                className="p-2 w-full flex flex-row items-center justify-between border border-neutral-20 rounded-lg"
+              >
+                <div className="flex flex-row gap-2 items-center">
+                  <div className="rounded-full w-[33px] h-[33px] overflow-hidden">
+                    <img
+                      src={item.avatar_url}
                       className="w-full h-full object-cover"
                     />
                   </div>

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-export default function ScheduleTime() {
+export default function ScheduleTime({
+  setNewTime,
+  setNewMinute,
+  setTimeData,
+}) {
   const [time, setTime] = useState(0);
   const [minute, setMinute] = useState(0);
 
@@ -32,6 +36,9 @@ export default function ScheduleTime() {
   const handleEditClick = () => {
     setIsEditMode(!isEditMode);
     setIsScrollEnabled(!isEditMode);
+    setNewTime = time;
+    setNewMinute = minute;
+    setTimeData({ time, minute });
   };
 
   return (

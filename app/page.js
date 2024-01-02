@@ -1,6 +1,4 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import Navbar from "./navbar";
 import Hero from "./hero";
 import Features from "./features";
@@ -16,17 +14,17 @@ import Footer from "./footer";
 export default function Home() {
   return (
     <>
-      <Navbar/>
-      <Hero/>
-      <Reason/>
-      <Subscribe/>
-      <How/>
-      <Join/>
-      <Commitment/>
-      <Testimonial/>
-      <Features/>
-      <Newsletter/>
-      <Footer/>
+      <Navbar />
+      <Hero />
+      <Reason />
+      <Subscribe />
+      <How />
+      <Join />
+      <Commitment />
+      <Testimonial />
+      <Features />
+      <Newsletter />
+      <Footer />
     </>
-  )
+  );
 }

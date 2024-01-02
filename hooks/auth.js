@@ -104,7 +104,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
   const resendEmailVerification = ({ setStatus }) => {
     axios
-      .post("/email/verify")
+      .post("/email-verification")
       .then((response) => setStatus(response.data.status));
   };
 

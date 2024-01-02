@@ -1,5 +1,7 @@
-'use client'
-import React, { useState } from "react";
+"use client";
+import { useAuth } from "@/hooks/auth";
+import axios from "@/lib/axios";
+import React, { useEffect, useState } from "react";
 
 export const groupData = [
   {
@@ -94,7 +96,32 @@ export const groupData = [
   },
 ];
 
-export default function ChooseGroup() {
+export default function ChooseGroup({
+  selectedAccount,
+  onSelectedGroupIdChange,
+}) {
+  const [facebookGroups, setFacebookGroups] = useState([]);
+  const [selectedGroupId, setSelectedGroupId] = useState([]);
+
+  useEffect(() => {
+    const fetchFacebookGroupData = async () => {
+      try {
+        const response = await axios.get("/api/group-post/groups", {
+          params: {
+            user_fb_account_id: selectedAccount,
+          },
+        });
+        setFacebookGroups(response.data.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (selectedAccount) {
+      fetchFacebookGroupData();
+    }
+  }, [selectedAccount]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(groupData);
 
@@ -112,9 +139,7 @@ export default function ChooseGroup() {
   };
 
   const [selectAllChecked, setSelectAllChecked] = useState(false);
-  const [checkboxes, setCheckboxes] = useState(
-    groupData.map(() => false)
-  );
+  const [checkboxes, setCheckboxes] = useState(groupData.map(() => false));
 
   // Event handler for "Select All" button
   const handleSelectAll = () => {
@@ -134,9 +159,12 @@ export default function ChooseGroup() {
     newCheckboxes[index] = !newCheckboxes[index];
     setCheckboxes(newCheckboxes);
 
-    // Check if all checkboxes are selected
-    const allChecked = newCheckboxes.every((checkbox) => checkbox);
-    setSelectAllChecked(allChecked);
+    // Update selectedGroupId based on checkbox state
+    const selectedIds = facebookGroups
+      .filter((group, i) => newCheckboxes[i])
+      .map((group) => group.id);
+    setSelectedGroupId(selectedIds);
+    onSelectedGroupIdChange(selectedIds);
   };
 
   return (
@@ -156,35 +184,41 @@ export default function ChooseGroup() {
           </div>
         </div>
         <div className="flex flex-col gap-1 2xl:gap-3">
-          {searchResults.map((item, index) => (
+          {facebookGroups.map((item, index) => (
             <div key={item.id}>
               <div className="border border-neutral-20 p-1 rounded flex flex-row justify-between items-center cursor-pointer">
                 <div className="flex items-center">
                   <div className="flex w-7 h-7 2xl:w-[33px] 2xl:h-[33px] items-center mr-2">
-                    <img src={`/assets/icons/${item.images}`} />
+                    {/* <img src={item.name} /> */}
+                    <img src="/assets/icons/image.png" alt="" />
                   </div>
                   <div>
                     <p className="text-xs 2xl:text-sm font-normal text-black">
                       {item.name}
                     </p>
                     <p className="text-[10px] font-light text-black">
-                      {item.member} Member
+                      {item.id} Member
                     </p>
                   </div>
                 </div>
-                <input type="checkbox" className="w-4 h-4 mt-1 ml-1" checked={checkboxes[index]}
-                        onChange={() => handleCheckboxChange(index)}/>
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 mt-1 ml-1"
+                  checked={checkboxes[index]}
+                  onChange={() => handleCheckboxChange(index)}
+                />
               </div>
             </div>
           ))}
         </div>
       </div>
       <div className="w-full flex justify-end">
-
-      <button className="bg-primary-10 rounded-md px-6 py-2 mt-6 text-sm font-medium text-primary-base"
-            onClick={selectAllChecked ? handleDeselectAll : handleSelectAll}>
-              {selectAllChecked ? "Deselect All" : "Select All"}
-            </button>
+        <button
+          className="bg-primary-10 rounded-md px-6 py-2 mt-6 text-sm font-medium text-primary-base"
+          onClick={selectAllChecked ? handleDeselectAll : handleSelectAll}
+        >
+          {selectAllChecked ? "Deselect All" : "Select All"}
+        </button>
       </div>
     </div>
   );

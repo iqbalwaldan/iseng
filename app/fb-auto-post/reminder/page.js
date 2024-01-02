@@ -166,6 +166,8 @@ export default function Reminder() {
       description,
       reminder_time: formattedDateString,
       image,
+      setErrors,
+      setStatus,
     });
     showCustomErrorAlert();
   };
@@ -240,7 +242,7 @@ export default function Reminder() {
                 htmlFor="grid-password"
               >
                 Phone Number
-                <span className="font-normal text-base text-error-base">*</span>
+                {/* <span className="font-normal text-base text-error-base">*</span> */}
               </label>
               <div className="flex items-center relative">
                 <input
@@ -335,8 +337,8 @@ export default function Reminder() {
                   onChange={handleImageUpload}
                   className="cursor-pointer w-full border border-y-neutral-50 border-l-0 border-r-neutral-50 rounded-r text-base font-normal text-[#A6A6A6] file:hidden bg-white px-3 py-[0.32rem] focus:text-neutral-70"
                 />
-                <InputError messages={errors.image} className="mt-2" />
               </div>
+              <InputError messages={errors.image} className="mt-2" />
             </div>
           </div>
         </div>

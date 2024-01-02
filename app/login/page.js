@@ -32,6 +32,8 @@ export default function Login() {
   const submitForm = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     login({
       email,
       password,
@@ -39,7 +41,6 @@ export default function Login() {
       setErrors,
       setStatus,
     }).finally(() => {
-      // Set loading to false when the login process is complete
       setLoading(false);
     });
   };
@@ -48,7 +49,7 @@ export default function Login() {
 
   const loginGoogle = async (e) => {
     e.preventDefault();
-    const googleUrl = await axios.get("/api/auth/google");
+    const googleUrl = await axios.get("/api/auth/google/redirect");
     setGoogleUrl(googleUrl.data);
     // window.location.href = googleUrl;
   };
@@ -59,6 +60,7 @@ export default function Login() {
       window.location.href = googleUrl;
     }
   }, [googleUrl]);
+
   return (
     <div className="flex flex-col md:flex-row">
       <CarouselSharein />
@@ -159,6 +161,7 @@ export default function Login() {
             <button
               type="submit"
               className="bg-[#2652FF] w-full h-[51px] mt-10 rounded-md py-2 px-4 text-xl font-semibold text-white"
+              disabled={loading}
             >
               {loading ? "Signing In..." : "Sign In"}
             </button>

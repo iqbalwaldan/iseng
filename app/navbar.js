@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,7 +33,7 @@ export default function Navbar() {
   }, []);
 
   const navbarClass = scrolled ? "bg-white" : "";
-  
+
   const textStyles = {
     color: scrolled ? "#2652FF" : "white",
   };
@@ -87,14 +87,20 @@ export default function Navbar() {
             </Link>
             <Link href="/register">
               <li>
-                <button className="px-6 py-1 ml-10 rounded-xl text-xl font-semibold border-2 border-neutral-10" style={buttonRegisterStyles}>
+                <button
+                  className="px-6 py-1 ml-10 rounded-xl text-xl font-semibold border-2 border-neutral-10"
+                  style={buttonRegisterStyles}
+                >
                   Register
                 </button>
               </li>
             </Link>
             <Link href="/login">
               <li>
-                <button className="px-6 py-2 ml-10 rounded-xl text-xl font-semibold bg-neutral-10 text-primary-base" style={buttonLoginStyles}>
+                <button
+                  className="px-6 py-2 ml-10 rounded-xl text-xl font-semibold bg-neutral-10 text-primary-base"
+                  style={buttonLoginStyles}
+                >
                   Login
                 </button>
               </li>

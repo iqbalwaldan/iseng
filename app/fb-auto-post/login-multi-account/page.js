@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import axios from "@/lib/axios";
+import { useAuth } from "@/hooks/auth";
 
 export default function LoginMultiAccount() {
   const [showAlert, setShowAlert] = useState(false);
@@ -278,7 +279,7 @@ export default function LoginMultiAccount() {
 
   const loginFacebook = async (e) => {
     e.preventDefault();
-    const facebookUrl = await axios.get("/api/auth/facebook");
+    const facebookUrl = await axios.get("/api/auth/facebook/redirect");
     setFacebookUrl(facebookUrl.data);
     // window.location.href = facebookUrl;
   };
@@ -289,6 +290,29 @@ export default function LoginMultiAccount() {
       window.location.href = facebookUrl;
     }
   }, [facebookUrl]);
+
+  const { user } = useAuth({ middleware: "auth" });
+
+  const [facebookAccounts, setFacebookAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchFacebookData = async () => {
+      try {
+        const response = await axios.get("/api/list-accounts", {
+          params: {
+            user_id: user.id,
+          },
+        });
+        setFacebookAccounts(response.data.accounts);
+        console.log(user?.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Panggil fungsi fetch data saat komponen dipasang
+    fetchFacebookData();
+  }, [user?.id]);
 
   return (
     <div className="flex w-full md:flex-row">
@@ -338,32 +362,32 @@ export default function LoginMultiAccount() {
                 <th scope="col" className="px-6 py-3">
                   Suspension Expiration Date
                 </th>
-                <th scope="col" className="px-6 py-3">
+                {/* <th scope="col" className="px-6 py-3">
                   Status Account
-                </th>
+                </th> */}
                 <th scope="col" className="px-6 py-3">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
-              {currentPageData.map((item, index) => (
+              {facebookAccounts.map((item, index) => (
                 <tr key={index} className="bg-white">
                   <td
                     scope="row"
                     className="px-6 py-4 font-medium  whitespace-nowrap text-black"
                   >
-                    {item.Name}
+                    {item.name}
                   </td>
-                  <td className="px-6 py-4">{item.IA}</td>
-                  <td className="px-6 py-4">{item.SED}</td>
-                  <td className="">
+                  <td className="px-6 py-4">{item.fb_id}</td>
+                  <td className="px-6 py-4">{item.avatar_url}</td>
+                  {/* <td className="">
                     <div
-                      className={`flex items-center justify-center rounded-md border ${item.status_bg_color} ${item.status_border_color} ${item.status_text_color}  h-[18px] w-[56px] text-[10px] ml-10`}
+                      className={`flex items-center justify-center rounded-md border ${}  h-[18px] w-[56px] text-[10px] ml-10`}
                     >
-                      {item.Status}
+                      qweqwe
                     </div>
-                  </td>
+                  </td> */}
 
                   <td>
                     <button
